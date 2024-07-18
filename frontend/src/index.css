@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #000000; /* Black for the background */
+    --foreground: #F3F4F6; /* Very light gray */
+    --overlay: #E5E7EB; /* Light gray for overlay */
+
+    --menu-bg: #FFFFFF; /* White for menu background */
+    --menu-foreground: #F7F8FA; /* Soft white for menu foreground */
+
+    --primary: #ffffff; /* Bright color for primary */
+    --primary-hover: #6B7280; /* Darker gray for hover */
+    --primary-foreground: #000000; /* Black for primary foreground */
+
+    --secondary: #E5E7EB; /* Light gray for secondary elements */
+    --secondary-foreground: #D1D5DB; /* Slightly darker than background */
+
+    --text-primary: #ffffff; /* Bright color for primary text */
+    --text-secondary: #4B5563; /* Dark gray for secondary text */
+    --text-tertiary: #6B7280; /* Medium gray for tertiary text */
+    --text-disabled: #9CA3AF; /* Light gray for disabled text */
+
+    --error: #DC2626; /* Red for errors */
+    --success: #16A34A; /* Green for success */
+    --alert: #D97706; /* Yellow for alerts */
+    --info: #0C83D9; /* Blue for information */
+
+    --disabled: #D1D5DB; /* Light gray for disabled elements */
+
+    --border: #E5E7EB; /* Soft gray for borders */
+  }
+
+  ::-webkit-scrollbar {
+    background-color: transparent;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    width: 1px;
+    background-color: #6B7280; /* Dark gray for scrollbar thumb */
+    border-radius: 4px;
+  }
+}
