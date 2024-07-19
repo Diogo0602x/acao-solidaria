@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { AppBar, Toolbar, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
 
@@ -8,54 +8,59 @@ const StyledAppBar = styled(AppBar)(() => ({
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
-  const logo = isScrolled ? '/logo-preto.svg' : '/logo-branco.svg'
+
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50)
+  }, [])
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-
     window.addEventListener('scroll', handleScroll)
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [handleScroll])
 
   return (
     <StyledAppBar
       position="fixed"
       color="transparent"
       sx={{
-        backgroundColor: isScrolled ? 'white' : 'transparent',
-        color: isScrolled ? 'black' : 'white',
+        backgroundColor: isScrolled ? 'background.default' : 'transparent',
+        color: isScrolled ? 'primary.main' : 'primary.light',
       }}
       elevation={isScrolled ? 4 : 0}
     >
       <Toolbar className="container mx-auto">
         <Box display="flex" flexGrow={1}>
-          <img src={logo} alt="Jornada Solidária" className="h-14" />
+          <img
+            src="/logo-branco.svg"
+            alt="Jornada Solidária"
+            className="h-16"
+          />
         </Box>
         <Box display="flex" alignItems="center">
           <Button
             variant="outlined"
             sx={{
               marginRight: 2,
-              borderColor: isScrolled ? 'black' : 'white',
-              color: isScrolled ? 'black' : 'white',
-              '&:hover': { borderColor: isScrolled ? 'black' : 'white' },
+              backgroundColor: 'primary.main',
+              color: 'primary.light',
+              '&:hover': {
+                borderColor: isScrolled ? 'primary.light' : 'primary.light',
+                color: 'primary.light',
+              },
             }}
           >
-            SignUp
+            Cadastrar-se
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             sx={{
-              backgroundColor: isScrolled ? 'black' : 'white',
-              color: isScrolled ? 'white' : 'black',
+              borderColor: isScrolled ? 'primary.light' : 'primary.main',
+              color: 'primary.main',
               '&:hover': {
-                backgroundColor: isScrolled
-                  ? 'rgba(0, 0, 0, 0.8)'
-                  : 'rgba(255, 255, 255, 0.8)',
+                borderColor: 'primary.light',
+                color: 'primary.light',
               },
             }}
           >

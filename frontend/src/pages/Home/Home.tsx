@@ -14,7 +14,7 @@ const Home: React.FC = () => {
         paddingTop: '5rem',
       }}
     >
-      <Typography variant="h2" color="textPrimary">
+      <Typography variant="h3" color="text.primary">
         Bem Vindo a Jornada Solidária
       </Typography>
     </Box>

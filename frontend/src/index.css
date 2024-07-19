@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: #000000; /* Black for the background */
-    --foreground: #F3F4F6; /* Very light gray */
-    --overlay: #E5E7EB; /* Light gray for overlay */
+    --background: #100605; 
+    --foreground: #ffffff; 
+    --overlay: #000000c4; 
 
-    --menu-bg: #FFFFFF; /* White for menu background */
-    --menu-foreground: #F7F8FA; /* Soft white for menu foreground */
+    --menu-bg: #FFFFFF; 
+    --menu-foreground: #F7F8FA;
 
-    --primary: #ffffff; /* Bright color for primary */
-    --primary-hover: #6B7280; /* Darker gray for hover */
-    --primary-foreground: #000000; /* Black for primary foreground */
+    --primary: #ffffff; 
+    --primary-hover: #100605;
+    --primary-foreground: #d4d4d4;
 
-    --secondary: #E5E7EB; /* Light gray for secondary elements */
-    --secondary-foreground: #D1D5DB; /* Slightly darker than background */
+    --secondary: #100605; 
+    --secondary-foreground: #261710; 
 
-    --text-primary: #ffffff; /* Bright color for primary text */
-    --text-secondary: #4B5563; /* Dark gray for secondary text */
-    --text-tertiary: #6B7280; /* Medium gray for tertiary text */
-    --text-disabled: #9CA3AF; /* Light gray for disabled text */
+    --text-primary: #ffffff;
+    --text-secondary: #100605; 
+    --text-tertiary: #000000; 
+    --text-disabled: #9CA3AF; 
 
-    --error: #DC2626; /* Red for errors */
-    --success: #16A34A; /* Green for success */
-    --alert: #D97706; /* Yellow for alerts */
-    --info: #0C83D9; /* Blue for information */
+    --error: #DC2626;
+    --success: #16A34A;
+    --alert: #D97706;
+    --info: #0C83D9; 
 
-    --disabled: #D1D5DB; /* Light gray for disabled elements */
+    --disabled: #D1D5DB;
 
-    --border: #E5E7EB; /* Soft gray for borders */
+    --border: #E5E7EB; /* Cinza suave para bordas */
   }
 
   ::-webkit-scrollbar {
@@ -42,7 +42,7 @@
 
   ::-webkit-scrollbar-thumb {
     width: 1px;
-    background-color: #6B7280; /* Dark gray for scrollbar thumb */
+    background-color: #100605; /* Cinza escuro para thumb do scrollbar */
     border-radius: 4px;
   }
 }
