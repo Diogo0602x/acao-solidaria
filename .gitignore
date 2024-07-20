@@ -1,0 +1,49 @@
+# .gitignore na raiz do projeto
+
+# Ignorar dependências e artefatos de build de backend
+/backend/node_modules/
+/backend/dist/
+/backend/build/
+/backend/*.log
+/backend/.env
+/backend/.env.*
+
+# Ignorar dependências e artefatos de build de frontend
+/frontend/node_modules/
+/frontend/dist/
+/frontend/build/
+/frontend/*.log
+/frontend/.env
+/frontend/.env.*
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar artefatos do editor de código
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorar logs e arquivos temporários
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.eslintcache
+
+# Ignorar arquivos de lock (dependências)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignorar artefatos de compilação (TypeScript)
+*.tsbuildinfo
+
+# Ignorar arquivos de test coverage
+coverage/
+.nyc_output/
