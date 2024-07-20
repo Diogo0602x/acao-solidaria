@@ -1,8 +1,12 @@
 declare namespace Express {
   export interface Request {
+    principalUser: {
+      id: string
+      role: 'church' | 'seminary'
+    }
     user: {
       id: string
-      role: 'church' | 'seminary' | 'priest' | 'seminarist' | 'pilgrim'
+      role: 'priest' | 'seminarist' | 'pilgrim'
     }
   }
 }

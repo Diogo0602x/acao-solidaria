@@ -9,25 +9,24 @@ interface Address {
   complement?: string
 }
 
-interface User extends Document {
+interface PrincipalUser extends Document {
   name: string
   email: string
   password: string
   confirmPassword?: string
-  role: 'priest' | 'seminarist' | 'pilgrim'
-  cpf: string
+  role: 'church' | 'seminary'
+  cnpj: string
   telephone: string
   cellphone?: string
   address: Address
-  linkedTo: Schema.Types.ObjectId
 }
 
-const UserSchema = new Schema<User>({
+const PrincipalUserSchema = new Schema<PrincipalUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  cpf: { type: String, required: true },
+  cnpj: { type: String, required: true },
   telephone: { type: String, required: true },
   cellphone: { type: String },
   address: {
@@ -38,13 +37,8 @@ const UserSchema = new Schema<User>({
     zipCode: { type: String, required: true },
     complement: { type: String },
   },
-  linkedTo: {
-    type: Schema.Types.ObjectId,
-    ref: 'PrincipalUser',
-    required: true,
-  },
 })
 
-const User = model<User>('User', UserSchema)
+const PrincipalUser = model<PrincipalUser>('PrincipalUser', PrincipalUserSchema)
 
-export { User }
+export { PrincipalUser }
