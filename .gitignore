@@ -7,7 +7,7 @@
 /backend/coverage/
 /backend/*.log
 /backend/.env
-/backend/.env.*
+/backend/.env.
 
 # Ignorar dependências e artefatos de build de frontend
 /frontend/node_modules/
