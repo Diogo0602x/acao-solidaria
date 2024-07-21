@@ -2,7 +2,7 @@ import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserR
 import { User } from '@modules/users/infra/mongoose/schemas/User'
 
 class ListUserByIdUseCase {
-  public async execute(id: string): Promise<User | undefined> {
+  public async execute(id: string): Promise<User | null> {
     const userRepository = new UserRepository()
     const user = await userRepository.findById(id)
     return user
