@@ -6,16 +6,16 @@ This is the backend API for managing users and fundraisings. It includes functio
 
 ## Features
 
-- User Management:
+- **User Management**:
   - Create, update, delete, and list users.
   - Authenticate users.
-- Principal User Management:
+- **Principal User Management**:
   - Create, update, delete, and list principal users.
   - Authenticate principal users.
-- Fundraising Management:
+- **Fundraising Management**:
   - Create, update, delete, and list fundraisings.
   - List fundraisings by user and by ID.
-- Fundraising Purchase Management:
+- **Fundraising Purchase Management**:
   - Create and list fundraising purchases by user.
 
 ## Installation
@@ -23,7 +23,7 @@ This is the backend API for managing users and fundraisings. It includes functio
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-repository.git
+    git clone https://github.com/Diogo0602x/jornadaSolidaria.git
     ```
 
 2. Install dependencies:
@@ -35,7 +35,11 @@ This is the backend API for managing users and fundraisings. It includes functio
 
 3. Set up environment variables:
 
-    Create a `.env` file in the root directory and add the necessary environment variables.
+    Copy the `.env.example` file to `.env` and update the necessary information:
+
+    ```sh
+    cp .env.example .env
+    ```
 
 4. Run the application:
 
