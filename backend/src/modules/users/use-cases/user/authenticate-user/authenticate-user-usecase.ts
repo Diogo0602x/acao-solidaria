@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
 import { User } from '@modules/users/infra/mongoose/schemas/User'
+import { IUserRepository } from '@modules/users/repositories/IUserRepository'
 
 interface IRequest {
   identifier: string // email or cpf
@@ -14,15 +14,15 @@ interface IResponse {
 }
 
 class AuthenticateUserUseCase {
-  public async execute({ identifier, password }: IRequest): Promise<IResponse> {
-    const userRepository = new UserRepository()
+  constructor(private userRepository: IUserRepository) {}
 
+  public async execute({ identifier, password }: IRequest): Promise<IResponse> {
     let user: User | null = null
 
     if (identifier.includes('@')) {
-      user = await userRepository.findByEmail(identifier)
+      user = await this.userRepository.findByEmail(identifier)
     } else {
-      user = await userRepository.findByCpf(identifier)
+      user = await this.userRepository.findByCpf(identifier)
     }
 
     if (!user) {

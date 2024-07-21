@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
-import { AuthenticatePrincipalUserUseCase } from './authenticate-principal-user-usecase'
+import { AuthenticatePrincipalUserUseCase } from '@users/use-cases'
+import { PrincipalUserRepository } from '@modules/users/infra/mongoose/repositories/PrincipalUserRepository'
 
 class AuthenticatePrincipalUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { identifier, password } = request.body
+    const principalUserRepository = new PrincipalUserRepository()
 
     const authenticatePrincipalUserUseCase =
-      new AuthenticatePrincipalUserUseCase()
+      new AuthenticatePrincipalUserUseCase(principalUserRepository)
 
     const { principalUser, token } =
       await authenticatePrincipalUserUseCase.execute({

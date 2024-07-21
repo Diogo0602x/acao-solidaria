@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { CreatePrincipalUserUseCase } from './create-principal-user-usecase'
+import { CreatePrincipalUserUseCase } from '@users/use-cases'
+import { PrincipalUserRepository } from '@modules/users/infra/mongoose/repositories/PrincipalUserRepository'
 
 class CreatePrincipalUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
@@ -14,8 +15,11 @@ class CreatePrincipalUserController {
       cellphone,
       address,
     } = request.body
+    const principalUserRepository = new PrincipalUserRepository()
 
-    const createPrincipalUserUseCase = new CreatePrincipalUserUseCase()
+    const createPrincipalUserUseCase = new CreatePrincipalUserUseCase(
+      principalUserRepository,
+    )
 
     const principalUser = await createPrincipalUserUseCase.execute({
       name,

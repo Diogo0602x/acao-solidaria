@@ -1,9 +1,10 @@
-import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
+import { IUserRepository } from '@modules/users/repositories/IUserRepository'
 
 class DeleteUserUseCase {
+  constructor(private userRepository: IUserRepository) {}
+
   public async execute(id: string): Promise<void> {
-    const userRepository = new UserRepository()
-    await userRepository.delete(id)
+    await this.userRepository.delete(id)
   }
 }
 

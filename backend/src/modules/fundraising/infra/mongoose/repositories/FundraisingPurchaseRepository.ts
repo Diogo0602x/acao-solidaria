@@ -1,6 +1,7 @@
-import { FundraisingPurchase } from '../schemas/FundraisingPurchase'
+import { IFundraisingPurchaseRepository } from '@modules/fundraising/repositories/IFundraisingPurchaseRepository'
+import { FundraisingPurchase } from '@modules/fundraising/infra/mongoose/schemas/FundraisingPurchase'
 
-class FundraisingPurchaseRepository {
+class FundraisingPurchaseRepository implements IFundraisingPurchaseRepository {
   public async create(data: {
     fundraising: string
     user: string

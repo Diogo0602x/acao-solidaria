@@ -1,7 +1,8 @@
-import { PrincipalUser } from '../schemas/PrincipalUser'
+import { IPrincipalUserRepository } from '@modules/users/repositories/IPrincipalUserRepository'
+import { PrincipalUser } from '@modules/users/infra/mongoose/schemas/PrincipalUser'
 import { ICreatePrincipalUserDTO } from '@modules/users/dtos/ICreatePrincipalUserDTO'
 
-class PrincipalUserRepository {
+class PrincipalUserRepository implements IPrincipalUserRepository {
   public async create(data: ICreatePrincipalUserDTO): Promise<PrincipalUser> {
     const principalUser = new PrincipalUser(data)
     await principalUser.save()

@@ -1,7 +1,7 @@
 import { compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { PrincipalUserRepository } from '@modules/users/infra/mongoose/repositories/PrincipalUserRepository'
 import { PrincipalUser } from '@modules/users/infra/mongoose/schemas/PrincipalUser'
+import { IPrincipalUserRepository } from '@modules/users/repositories/IPrincipalUserRepository'
 
 interface IRequest {
   identifier: string // email or cnpj
@@ -14,15 +14,15 @@ interface IResponse {
 }
 
 class AuthenticatePrincipalUserUseCase {
-  public async execute({ identifier, password }: IRequest): Promise<IResponse> {
-    const principalUserRepository = new PrincipalUserRepository()
+  constructor(private principalUserRepository: IPrincipalUserRepository) {}
 
+  public async execute({ identifier, password }: IRequest): Promise<IResponse> {
     let principalUser: PrincipalUser | null = null
 
     if (identifier.includes('@')) {
-      principalUser = await principalUserRepository.findByEmail(identifier)
+      principalUser = await this.principalUserRepository.findByEmail(identifier)
     } else {
-      principalUser = await principalUserRepository.findByCnpj(identifier)
+      principalUser = await this.principalUserRepository.findByCnpj(identifier)
     }
 
     if (!principalUser) {

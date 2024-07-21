@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { CreateUserUseCase } from './create-user-usecase'
+import { CreateUserUseCase } from '@users/use-cases'
+import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
 
 class CreateUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
@@ -15,8 +16,9 @@ class CreateUserController {
       address,
       linkedTo,
     } = request.body
+    const userRepository = new UserRepository()
 
-    const createUserUseCase = new CreateUserUseCase()
+    const createUserUseCase = new CreateUserUseCase(userRepository)
 
     const user = await createUserUseCase.execute({
       name,

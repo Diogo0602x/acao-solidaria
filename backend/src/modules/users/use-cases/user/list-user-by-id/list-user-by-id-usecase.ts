@@ -1,10 +1,11 @@
-import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
 import { User } from '@modules/users/infra/mongoose/schemas/User'
+import { IUserRepository } from '@modules/users/repositories/IUserRepository'
 
 class ListUserByIdUseCase {
+  constructor(private userRepository: IUserRepository) {}
+
   public async execute(id: string): Promise<User | null> {
-    const userRepository = new UserRepository()
-    const user = await userRepository.findById(id)
+    const user = await this.userRepository.findById(id)
     return user
   }
 }

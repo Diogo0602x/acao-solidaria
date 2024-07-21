@@ -1,19 +1,20 @@
+import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
 import { Fundraising } from '../schemas/Fundraising'
 import { ICreateFundraisingDTO } from '@modules/fundraising/dtos/ICreateFundraisingDTO'
 
-class FundraisingRepository {
+class FundraisingRepository implements IFundraisingRepository {
   public async create(data: ICreateFundraisingDTO): Promise<Fundraising> {
     const fundraising = new Fundraising(data)
     await fundraising.save()
     return fundraising
   }
 
-  public async findById(id: string): Promise<Fundraising | undefined> {
+  public async findById(id: string): Promise<Fundraising | null> {
     const fundraising = await Fundraising.findById(id)
       .populate('user')
       .populate('principalUser')
       .exec()
-    return fundraising || undefined
+    return fundraising
   }
 
   public async findAll(): Promise<Fundraising[]> {
@@ -30,11 +31,11 @@ class FundraisingRepository {
   public async update(
     id: string,
     data: Partial<ICreateFundraisingDTO>,
-  ): Promise<Fundraising | undefined> {
+  ): Promise<Fundraising | null> {
     const updatedFundraising = await Fundraising.findByIdAndUpdate(id, data, {
       new: true,
     }).exec()
-    return updatedFundraising || undefined
+    return updatedFundraising
   }
 
   public async delete(id: string): Promise<void> {

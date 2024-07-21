@@ -1,12 +1,16 @@
 import { Request, Response } from 'express'
 import { UpdatePrincipalUserUseCase } from '@users/use-cases'
+import { PrincipalUserRepository } from '@modules/users/infra/mongoose/repositories/PrincipalUserRepository'
 
 class UpdatePrincipalUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { principalUserId } = request.params
     const updateData = request.body
+    const principalUserRepository = new PrincipalUserRepository()
 
-    const updatePrincipalUserUseCase = new UpdatePrincipalUserUseCase()
+    const updatePrincipalUserUseCase = new UpdatePrincipalUserUseCase(
+      principalUserRepository,
+    )
 
     const principalUser = await updatePrincipalUserUseCase.execute(
       principalUserId,

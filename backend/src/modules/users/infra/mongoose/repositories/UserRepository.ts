@@ -1,9 +1,10 @@
-import { User } from '../schemas/User'
+import { User } from '@modules/users/infra/mongoose/schemas/User'
 import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO'
 import { IUpdateUserDTO } from '@modules/users/dtos/IUpdateUserDTO'
-import { PrincipalUser } from '../schemas/PrincipalUser'
+import { PrincipalUser } from '@modules/users/infra/mongoose/schemas/PrincipalUser'
+import { IUserRepository } from '@modules/users/repositories/IUserRepository'
 
-class UserRepository {
+class UserRepository implements IUserRepository {
   public async create(data: ICreateUserDTO): Promise<User> {
     const user = new User({
       ...data,

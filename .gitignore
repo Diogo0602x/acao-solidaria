@@ -4,6 +4,7 @@
 /backend/node_modules/
 /backend/dist/
 /backend/build/
+/backend/coverage/
 /backend/*.log
 /backend/.env
 /backend/.env.*

@@ -6,14 +6,14 @@ interface IUpdateUserDTO {
   cpf?: string
   telephone?: string
   cellphone?: string
-  address?: {
-    street?: string
-    neighborhood?: string
-    city?: string
-    state?: string
-    zipCode?: string
+  address?: Partial<{
+    street: string
+    neighborhood: string
+    city: string
+    state: string
+    zipCode: string
     complement?: string
-  }
+  }>
   linkedTo?: string
 }
 

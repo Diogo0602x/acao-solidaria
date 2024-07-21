@@ -1,21 +1,22 @@
-import { PrincipalUserRepository } from '@modules/users/infra/mongoose/repositories/PrincipalUserRepository'
 import { IUpdatePrincipalUserDTO } from '@modules/users/dtos/IUpdatePrincipalUserDTO'
 import { PrincipalUser } from '@modules/users/infra/mongoose/schemas/PrincipalUser'
+import { IPrincipalUserRepository } from '@modules/users/repositories/IPrincipalUserRepository'
 
 class UpdatePrincipalUserUseCase {
+  constructor(private principalUserRepository: IPrincipalUserRepository) {}
+
   public async execute(
     id: string,
     data: IUpdatePrincipalUserDTO,
   ): Promise<PrincipalUser | null> {
-    const principalUserRepository = new PrincipalUserRepository()
-    let principalUser = await principalUserRepository.findById(id)
+    let principalUser = await this.principalUserRepository.findById(id)
 
     if (!principalUser) {
       return null
     }
 
     principalUser = Object.assign(principalUser, data)
-    await principalUserRepository.update(id, principalUser)
+    await this.principalUserRepository.update(id, principalUser)
 
     return principalUser
   }

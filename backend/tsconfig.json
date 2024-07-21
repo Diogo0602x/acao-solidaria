@@ -12,8 +12,6 @@
       "@modules/*": ["modules/*"],
       "@config/*": ["config/*"],
       "@shared/*": ["shared/*"],
-      "@notifications/*": ["modules/notifications/*"],
-      "@appointments/*": ["modules/appointments/*"],
       "@users/*": ["modules/users/*"],
       "@fundraising/*": ["modules/fundraising/*"],
       "@docs/*": ["docs/*"]

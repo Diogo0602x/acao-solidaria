@@ -1,9 +1,10 @@
-import { FundraisingRepository } from '@modules/fundraising/infra/mongoose/repositories/FundraisingRepository'
+import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
 
 class DeleteFundraisingUseCase {
+  constructor(private fundraisingRepository: IFundraisingRepository) {}
+
   public async execute(id: string): Promise<void> {
-    const fundraisingRepository = new FundraisingRepository()
-    await fundraisingRepository.delete(id)
+    await this.fundraisingRepository.delete(id)
   }
 }
 

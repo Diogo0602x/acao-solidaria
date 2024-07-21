@@ -1,10 +1,11 @@
-import { FundraisingRepository } from '@modules/fundraising/infra/mongoose/repositories/FundraisingRepository'
 import { Fundraising } from '@modules/fundraising/infra/mongoose/schemas/Fundraising'
+import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
 
 class ListFundraisingUseCase {
+  constructor(private fundraisingRepository: IFundraisingRepository) {}
+
   public async execute(): Promise<Fundraising[]> {
-    const fundraisingRepository = new FundraisingRepository()
-    const fundraisings = await fundraisingRepository.findAll()
+    const fundraisings = await this.fundraisingRepository.findAll()
     return fundraisings
   }
 }
