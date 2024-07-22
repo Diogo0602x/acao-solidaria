@@ -29,7 +29,7 @@ This is the backend API for managing users and fundraisings. It includes functio
 2. Install dependencies:
 
     ```sh
-    cd your-repository
+    cd backend
     yarn install
     ```
 
@@ -44,7 +44,7 @@ This is the backend API for managing users and fundraisings. It includes functio
 4. Run the application:
 
     ```sh
-    yarn start
+    yarn dev
     ```
 
 ## Running Tests
@@ -53,3 +53,8 @@ To run tests, use the following command:
 
 ```sh
 yarn test
+```
+
+## Swagger Documentation
+
+The API documentation is available at `/api-docs` after starting the application.
