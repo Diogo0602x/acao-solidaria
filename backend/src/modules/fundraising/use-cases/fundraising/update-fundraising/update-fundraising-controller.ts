@@ -5,22 +5,22 @@ import { FundraisingRepository } from '@modules/fundraising/infra/mongoose/repos
 class UpdateFundraisingController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { fundraisingId } = request.params
-    const updateData = request.body
+    const { name, quantity, quantityAvailable, price, imageUrl } = request.body
+
     const fundraisingRepository = new FundraisingRepository()
     const updateFundraisingUseCase = new UpdateFundraisingUseCase(
       fundraisingRepository,
     )
 
-    const fundraising = await updateFundraisingUseCase.execute(
-      fundraisingId,
-      updateData,
-    )
+    const fundraising = await updateFundraisingUseCase.execute(fundraisingId, {
+      name,
+      quantity,
+      quantityAvailable,
+      price,
+      imageUrl,
+    })
 
-    if (!fundraising) {
-      return response.status(404).json({ error: 'Fundraising not found' })
-    }
-
-    return response.json(fundraising)
+    return response.status(200).json(fundraising)
   }
 }
 

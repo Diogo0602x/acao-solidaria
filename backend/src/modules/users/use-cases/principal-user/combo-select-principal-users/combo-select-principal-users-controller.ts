@@ -6,7 +6,6 @@ class ComboSelectPrincipalUsersController {
   private comboSelectPrincipalUsersUseCase: ComboSelectPrincipalUsersUseCase
 
   constructor() {
-    console.log('ComboSelectPrincipalUsersController constructor called')
     const principalUserRepository = new PrincipalUserRepository()
     this.comboSelectPrincipalUsersUseCase =
       new ComboSelectPrincipalUsersUseCase(principalUserRepository)

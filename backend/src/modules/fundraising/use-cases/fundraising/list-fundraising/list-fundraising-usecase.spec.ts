@@ -63,7 +63,9 @@ describe('ListFundraising', () => {
 
     await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })

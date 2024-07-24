@@ -8,8 +8,9 @@ class ListFundraisingController {
     const listFundraisingUseCase = new ListFundraisingUseCase(
       fundraisingRepository,
     )
+
     const fundraisings = await listFundraisingUseCase.execute()
-    return response.json(fundraisings)
+    return response.status(200).json(fundraisings)
   }
 }
 

@@ -1,61 +1,48 @@
-const updateFundraising = {
+const purchaseFundraising = {
   tags: ['Fundraising'],
-  description: 'Update an existing fundraising campaign',
-  operationId: 'updateFundraising',
+  description: 'Purchase a quantity of a fundraising campaign',
+  operationId: 'purchaseFundraising',
   requestBody: {
     content: {
       'application/json': {
         schema: {
           type: 'object',
           properties: {
-            name: { type: 'string' },
+            fundraisingId: { type: 'string' },
+            userId: { type: 'string' },
             quantity: { type: 'number' },
-            quantityAvailable: { type: 'number' },
-            price: { type: 'number' },
-            imageUrl: { type: 'string' },
           },
+          required: ['fundraisingId', 'userId', 'quantity'],
         },
         example: {
-          name: 'Calendário Atualizado',
-          quantity: 1200,
-          quantityAvailable: 800,
-          price: 12,
-          imageUrl: 'http://example.com/imagem_atualizada.jpg',
+          fundraisingId: 'fundraising_id',
+          userId: 'user_id',
+          quantity: 10,
         },
       },
     },
   },
   responses: {
-    '200': {
-      description: 'Fundraising campaign updated successfully',
+    '201': {
+      description: 'Purchase made successfully',
       content: {
         'application/json': {
           schema: {
             type: 'object',
             properties: {
               id: { type: 'string' },
-              name: { type: 'string' },
-              quantity: { type: 'number' },
-              quantityAvailable: { type: 'number' },
-              quantitySold: { type: 'number' },
-              price: { type: 'number' },
-              imageUrl: { type: 'string' },
+              fundraising: { type: 'string' },
               user: { type: 'string' },
-              pixKeyCpf: { type: 'string' },
-              pixKeyCnpj: { type: 'string' },
+              quantity: { type: 'number' },
+              pricePurchased: { type: 'number' },
             },
           },
           example: {
-            id: 'fundraising_id',
-            name: 'Calendário Atualizado',
-            quantity: 1200,
-            quantityAvailable: 800,
-            quantitySold: 400,
-            price: 12,
-            imageUrl: 'http://example.com/imagem_atualizada.jpg',
+            id: 'purchase_id',
+            fundraising: 'fundraising_id',
             user: 'user_id',
-            pixKeyCpf: '123.456.789-00',
-            pixKeyCnpj: '12.345.678/0001-99',
+            quantity: 10,
+            pricePurchased: 100,
           },
         },
       },
@@ -111,4 +98,4 @@ const updateFundraising = {
   },
 }
 
-export { updateFundraising }
+export { purchaseFundraising }

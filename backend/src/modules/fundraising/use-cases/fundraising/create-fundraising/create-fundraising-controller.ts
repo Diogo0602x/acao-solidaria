@@ -6,11 +6,21 @@ import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserR
 
 class CreateFundraisingController {
   public async handle(request: Request, response: Response): Promise<Response> {
-    const { name, quantityAvailable, imageUrl, userId } = request.body
+    const {
+      name,
+      quantity,
+      quantityAvailable,
+      price,
+      imageUrl,
+      userId,
+      pixKeyCpf,
+      pixKeyCnpj,
+    } = request.body
 
     const fundraisingRepository = new FundraisingRepository()
     const principalUserRepository = new PrincipalUserRepository()
     const userRepository = new UserRepository()
+
     const createFundraisingUseCase = new CreateFundraisingUseCase(
       fundraisingRepository,
       principalUserRepository,
@@ -19,9 +29,13 @@ class CreateFundraisingController {
 
     const fundraising = await createFundraisingUseCase.execute({
       name,
+      quantity,
       quantityAvailable,
+      price,
       imageUrl,
       userId,
+      pixKeyCpf,
+      pixKeyCnpj,
     })
 
     return response.status(201).json(fundraising)

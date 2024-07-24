@@ -1,31 +1,41 @@
+import { FakeFundraisingPurchaseRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-purchase-repository'
 import { FakeFundraisingRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-repository'
 import { FakePrincipalUserRepository } from '@modules/users/repositories/fakes/fake-principal-user-repository'
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
-import { ListFundraisingByUserUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-by-user/list-fundraising-by-user-usecase'
+import { ListFundraisingSalesByUserUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-sales-by-user/list-fundraising-sales-by-user-usecase'
 import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
+import { PurchaseFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/purchase-fundraising/purchase-fundraising-usecase'
 
 let fakeFundraisingRepository: FakeFundraisingRepository
 let fakePrincipalUserRepository: FakePrincipalUserRepository
 let fakeUserRepository: FakeUserRepository
-let listFundraisingByUser: ListFundraisingByUserUseCase
+let fakeFundraisingPurchaseRepository: FakeFundraisingPurchaseRepository
+let listFundraisingSalesByUser: ListFundraisingSalesByUserUseCase
 let createFundraising: CreateFundraisingUseCase
+let purchaseFundraising: PurchaseFundraisingUseCase
 
-describe('ListFundraisingByUser', () => {
+describe('ListFundraisingSalesByUser', () => {
   beforeEach(() => {
     fakeFundraisingRepository = new FakeFundraisingRepository()
     fakePrincipalUserRepository = new FakePrincipalUserRepository()
     fakeUserRepository = new FakeUserRepository()
-    listFundraisingByUser = new ListFundraisingByUserUseCase(
+    fakeFundraisingPurchaseRepository = new FakeFundraisingPurchaseRepository()
+    listFundraisingSalesByUser = new ListFundraisingSalesByUserUseCase(
       fakeFundraisingRepository,
+      fakeFundraisingPurchaseRepository,
     )
     createFundraising = new CreateFundraisingUseCase(
       fakeFundraisingRepository,
       fakePrincipalUserRepository,
       fakeUserRepository,
     )
+    purchaseFundraising = new PurchaseFundraisingUseCase(
+      fakeFundraisingPurchaseRepository,
+      fakeFundraisingRepository,
+    )
   })
 
-  it('should be able to list all fundraisings by user id', async () => {
+  it('should be able to list all fundraising sales by a user', async () => {
     const principalUser = await fakePrincipalUserRepository.create({
       name: 'Igreja de São Paulo',
       email: 'contact@igrejaspaulo.com.br',
@@ -63,15 +73,25 @@ describe('ListFundraisingByUser', () => {
       linkedTo: principalUser.id,
     })
 
-    await createFundraising.execute({
+    const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })
 
-    const fundraisings = await listFundraisingByUser.execute(user.id)
+    await purchaseFundraising.execute({
+      fundraisingId: fundraising.id,
+      userId: user.id,
+      quantity: 10,
+    })
 
-    expect(fundraisings).toHaveLength(1)
+    const sales = await listFundraisingSalesByUser.execute(user.id)
+
+    expect(sales).toHaveLength(1)
+    expect(sales[0].quantitySold).toBe(10)
+    expect(sales[0].priceSold).toBe(100)
   })
 })

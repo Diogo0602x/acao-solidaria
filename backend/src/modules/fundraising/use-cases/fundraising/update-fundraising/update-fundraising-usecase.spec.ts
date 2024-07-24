@@ -63,24 +63,40 @@ describe('UpdateFundraising', () => {
 
     const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })
 
     const updatedFundraising = await updateFundraising.execute(fundraising.id, {
       name: 'Calendário Atualizado',
+      quantity: 1200,
+      quantityAvailable: 800,
+      price: 12,
+      imageUrl: 'http://example.com/imagem_atualizada.jpg',
     })
 
     expect(updatedFundraising).toHaveProperty('id')
     expect(updatedFundraising?.name).toBe('Calendário Atualizado')
+    expect(updatedFundraising?.quantity).toBe(1200)
+    expect(updatedFundraising?.quantityAvailable).toBe(800)
+    expect(updatedFundraising?.price).toBe(12)
+    expect(updatedFundraising?.imageUrl).toBe(
+      'http://example.com/imagem_atualizada.jpg',
+    )
   })
 
-  it('should return null if fundraising not found', async () => {
-    const result = await updateFundraising.execute('non-existing-id', {
-      name: 'Calendário Atualizado',
-    })
-
-    expect(result).toBeNull()
+  it('should throw an error if fundraising not found', async () => {
+    await expect(
+      updateFundraising.execute('non-existing-id', {
+        name: 'Calendário Atualizado',
+        quantity: 1200,
+        quantityAvailable: 800,
+        price: 12,
+        imageUrl: 'http://example.com/imagem_atualizada.jpg',
+      }),
+    ).rejects.toThrow('Fundraising not found')
   })
 })

@@ -12,7 +12,7 @@ class UpdateFundraisingUseCase {
     let fundraising = await this.fundraisingRepository.findById(id)
 
     if (!fundraising) {
-      return null
+      throw new Error('Fundraising not found')
     }
 
     fundraising = await this.fundraisingRepository.update(id, data)

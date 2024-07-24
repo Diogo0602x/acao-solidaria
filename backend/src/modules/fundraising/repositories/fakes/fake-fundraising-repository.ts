@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid'
 import { Fundraising } from '@modules/fundraising/infra/mongoose/schemas/Fundraising'
 import { ICreateFundraisingDTO } from '@modules/fundraising/dtos/ICreateFundraisingDTO'
+import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
 
-class FakeFundraisingRepository {
+class FakeFundraisingRepository implements IFundraisingRepository {
   private fundraisings: Fundraising[] = []
 
   public async create(data: ICreateFundraisingDTO): Promise<Fundraising> {

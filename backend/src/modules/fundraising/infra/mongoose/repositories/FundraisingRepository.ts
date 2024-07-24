@@ -1,6 +1,8 @@
 import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
 import { Fundraising } from '../schemas/Fundraising'
 import { ICreateFundraisingDTO } from '@modules/fundraising/dtos/ICreateFundraisingDTO'
+import { IUpdateFundraisingDTO } from '@modules/fundraising/dtos/IUpdateFundraisingDTO'
+import mongoose from 'mongoose'
 
 class FundraisingRepository implements IFundraisingRepository {
   public async create(data: ICreateFundraisingDTO): Promise<Fundraising> {
@@ -10,6 +12,9 @@ class FundraisingRepository implements IFundraisingRepository {
   }
 
   public async findById(id: string): Promise<Fundraising | null> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return null
+    }
     const fundraising = await Fundraising.findById(id)
       .populate('user')
       .populate('principalUser')
@@ -30,7 +35,7 @@ class FundraisingRepository implements IFundraisingRepository {
 
   public async update(
     id: string,
-    data: Partial<ICreateFundraisingDTO>,
+    data: Partial<IUpdateFundraisingDTO>,
   ): Promise<Fundraising | null> {
     const updatedFundraising = await Fundraising.findByIdAndUpdate(id, data, {
       new: true,

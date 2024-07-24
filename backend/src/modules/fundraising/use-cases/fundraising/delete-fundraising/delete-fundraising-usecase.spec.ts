@@ -63,17 +63,24 @@ describe('DeleteFundraising', () => {
 
     const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })
 
     await deleteFundraising.execute(fundraising.id)
 
-    const findFundraising = await fakeFundraisingRepository.findById(
+    const foundFundraising = await fakeFundraisingRepository.findById(
       fundraising.id,
     )
+    expect(foundFundraising).toBeNull()
+  })
 
-    expect(findFundraising).toBeNull()
+  it('should throw an error if fundraising not found', async () => {
+    await expect(deleteFundraising.execute('non-existing-id')).rejects.toThrow(
+      'Fundraising not found',
+    )
   })
 })

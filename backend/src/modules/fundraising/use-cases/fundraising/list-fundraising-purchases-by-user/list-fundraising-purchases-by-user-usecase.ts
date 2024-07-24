@@ -1,5 +1,5 @@
-import { FundraisingPurchase } from '@modules/fundraising/infra/mongoose/schemas/FundraisingPurchase'
 import { IFundraisingPurchaseRepository } from '@modules/fundraising/repositories/IFundraisingPurchaseRepository'
+import { FundraisingPurchase } from '@modules/fundraising/infra/mongoose/schemas/FundraisingPurchase'
 
 class ListFundraisingPurchasesByUserUseCase {
   constructor(
@@ -7,7 +7,9 @@ class ListFundraisingPurchasesByUserUseCase {
   ) {}
 
   public async execute(userId: string): Promise<FundraisingPurchase[]> {
-    return this.fundraisingPurchaseRepository.findByUserId(userId)
+    const purchases =
+      await this.fundraisingPurchaseRepository.findByUserId(userId)
+    return purchases
   }
 }
 

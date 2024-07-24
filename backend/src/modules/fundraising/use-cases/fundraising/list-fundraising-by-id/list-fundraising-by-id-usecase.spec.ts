@@ -1,14 +1,14 @@
 import { FakeFundraisingRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-repository'
-import { ListFundraisingByIdUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-by-id/list-fundraising-by-id-usecase'
-import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
 import { FakePrincipalUserRepository } from '@modules/users/repositories/fakes/fake-principal-user-repository'
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
+import { ListFundraisingByIdUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-by-id/list-fundraising-by-id-usecase'
+import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
 
 let fakeFundraisingRepository: FakeFundraisingRepository
-let listFundraisingById: ListFundraisingByIdUseCase
-let createFundraising: CreateFundraisingUseCase
 let fakePrincipalUserRepository: FakePrincipalUserRepository
 let fakeUserRepository: FakeUserRepository
+let listFundraisingById: ListFundraisingByIdUseCase
+let createFundraising: CreateFundraisingUseCase
 
 describe('ListFundraisingById', () => {
   beforeEach(() => {
@@ -65,7 +65,9 @@ describe('ListFundraisingById', () => {
 
     const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })
@@ -75,9 +77,9 @@ describe('ListFundraisingById', () => {
     expect(foundFundraising).toHaveProperty('id')
   })
 
-  it('should return null if fundraising not found', async () => {
-    const result = await listFundraisingById.execute('non-existing-id')
-
-    expect(result).toBeNull()
+  it('should throw an error if fundraising not found', async () => {
+    await expect(
+      listFundraisingById.execute('non-existing-id'),
+    ).rejects.toThrow('The fundraising id does not exist')
   })
 })

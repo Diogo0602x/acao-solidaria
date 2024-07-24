@@ -4,6 +4,8 @@ interface FundraisingPurchase extends Document {
   fundraising: Schema.Types.ObjectId
   user: Schema.Types.ObjectId
   quantity: number
+  pricePurchased: number
+  priceSold: number
 }
 
 const FundraisingPurchaseSchema = new Schema<FundraisingPurchase>({
@@ -14,6 +16,8 @@ const FundraisingPurchaseSchema = new Schema<FundraisingPurchase>({
   },
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   quantity: { type: Number, required: true },
+  pricePurchased: { type: Number, required: true },
+  priceSold: { type: Number, required: true },
 })
 
 const FundraisingPurchase = model<FundraisingPurchase>(

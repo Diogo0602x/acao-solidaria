@@ -39,8 +39,14 @@ const routes = {
     put: FundraisingRoutes.updateFundraising,
     delete: FundraisingRoutes.deleteFundraising,
   },
-  '/fundraising/user/{userId}': {
-    get: FundraisingRoutes.listFundraisingByUser,
+  '/fundraising/purchase': {
+    put: FundraisingRoutes.purchaseFundraising,
+  },
+  '/fundraising/purchases/user/{userId}': {
+    get: FundraisingRoutes.listFundraisingPurchasesByUser,
+  },
+  '/fundraising/sales/user/{userId}': {
+    get: FundraisingRoutes.listFundraisingSalesByUser,
   },
 }
 export { routes }

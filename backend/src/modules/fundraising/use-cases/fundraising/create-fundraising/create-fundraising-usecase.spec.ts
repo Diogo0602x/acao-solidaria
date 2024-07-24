@@ -60,7 +60,9 @@ describe('CreateFundraising', () => {
 
     const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: user.id,
     })
@@ -90,7 +92,9 @@ describe('CreateFundraising', () => {
     await expect(
       createFundraising.execute({
         name: 'Calendário',
+        quantity: 1000,
         quantityAvailable: 1000,
+        price: 10,
         imageUrl: 'http://example.com/imagem.jpg',
         userId: user.id,
       }),
@@ -119,7 +123,9 @@ describe('CreateFundraising', () => {
 
     const fundraising = await createFundraising.execute({
       name: 'Calendário',
+      quantity: 1000,
       quantityAvailable: 1000,
+      price: 10,
       imageUrl: 'http://example.com/imagem.jpg',
       userId: principalUser.id,
     })
@@ -131,7 +137,9 @@ describe('CreateFundraising', () => {
     await expect(
       createFundraising.execute({
         name: 'Calendário',
+        quantity: 1000,
         quantityAvailable: 1000,
+        price: 10,
         imageUrl: 'http://example.com/imagem.jpg',
         userId: 'non-existing-id',
       }),
