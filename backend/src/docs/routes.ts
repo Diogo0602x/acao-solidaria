@@ -1,7 +1,14 @@
-import { UsersRoutes, PrincipalUserRoutes } from '@docs/modules/users'
-import { FundraisingRoutes } from '@docs/modules/fundraising'
+import {
+  UsersRoutes,
+  PrincipalUserRoutes,
+  AddressRoutes,
+  FundraisingRoutes,
+} from '@docs/modules'
 
 const routes = {
+  '/address/{cep}': {
+    get: AddressRoutes.getAddressByCep,
+  },
   '/principal-users': {
     post: PrincipalUserRoutes.createPrincipalUser,
     get: PrincipalUserRoutes.listPrincipalUser,
@@ -10,6 +17,9 @@ const routes = {
     get: PrincipalUserRoutes.listPrincipalUserById,
     put: PrincipalUserRoutes.updatePrincipalUser,
     delete: PrincipalUserRoutes.deletePrincipalUser,
+  },
+  '/principal-users/combo-select': {
+    get: PrincipalUserRoutes.comboSelectPrincipalUsers,
   },
   '/users': {
     post: UsersRoutes.createUser,

@@ -4,6 +4,7 @@ import { updatePrincipalUser } from '@docs/modules/users/principal-users/update-
 import { listPrincipalUser } from '@docs/modules/users/principal-users/list-principal-user'
 import { listPrincipalUserById } from '@docs/modules/users/principal-users/list-principal-user-by-id'
 import { deletePrincipalUser } from '@docs/modules/users/principal-users/delete-principal-user'
+import { comboSelectPrincipalUsers } from '@docs/modules/users/principal-users/combo-select-principal-users'
 
 const PrincipalUserRoutes = {
   autenticatePrincipalUser,
@@ -12,6 +13,7 @@ const PrincipalUserRoutes = {
   listPrincipalUser,
   listPrincipalUserById,
   deletePrincipalUser,
+  comboSelectPrincipalUsers,
 }
 
 export { PrincipalUserRoutes }

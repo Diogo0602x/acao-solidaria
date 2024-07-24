@@ -6,6 +6,7 @@ import {
   ListByIdPrincipalUserController,
   DeletePrincipalUserController,
   AuthenticatePrincipalUserController,
+  ComboSelectPrincipalUsersController,
 } from '@users/use-cases'
 
 const principalUserRouter = Router()
@@ -16,6 +17,10 @@ principalUserRouter.put(
   new UpdatePrincipalUserController().handle,
 )
 principalUserRouter.get('/', new ListPrincipalUserController().handle)
+principalUserRouter.get(
+  '/combo-select',
+  new ComboSelectPrincipalUsersController().handle,
+)
 principalUserRouter.get(
   '/:principalUserId',
   new ListByIdPrincipalUserController().handle,
