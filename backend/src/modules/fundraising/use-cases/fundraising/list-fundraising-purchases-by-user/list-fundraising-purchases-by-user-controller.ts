@@ -5,8 +5,8 @@ import { FundraisingPurchaseRepository } from '@modules/fundraising/infra/mongoo
 class ListFundraisingPurchasesByUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { userId } = request.params
-
     const fundraisingPurchaseRepository = new FundraisingPurchaseRepository()
+
     const listFundraisingPurchasesByUserUseCase =
       new ListFundraisingPurchasesByUserUseCase(fundraisingPurchaseRepository)
 

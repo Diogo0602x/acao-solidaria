@@ -1,20 +1,17 @@
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
-import { ListUserByIdUseCase } from '@users/use-cases'
-import { CreateUserUseCase } from '@modules/users/use-cases/user/create-user/create-user-usecase'
+import { ListUserByIdUseCase } from '@modules/users/use-cases/user/list-user-by-id/list-user-by-id-usecase'
 
 let fakeUserRepository: FakeUserRepository
 let listUserById: ListUserByIdUseCase
-let createUser: CreateUserUseCase
 
 describe('ListUserById', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     listUserById = new ListUserByIdUseCase(fakeUserRepository)
-    createUser = new CreateUserUseCase(fakeUserRepository)
   })
 
-  it('should be able to list a user by id', async () => {
-    const user = await createUser.execute({
+  it('should be able to list a user by ID', async () => {
+    const user = await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
       password: 'senha123',
@@ -34,6 +31,13 @@ describe('ListUserById', () => {
 
     const foundUser = await listUserById.execute(user.id)
 
-    expect(foundUser?.id).toBe(user.id)
+    expect(foundUser).toHaveProperty('id')
+    expect(foundUser).toHaveProperty('email', 'joao.silva@example.com')
+  })
+
+  it('should return null if user is not found', async () => {
+    const foundUser = await listUserById.execute('non-existing-id')
+
+    expect(foundUser).toBeNull()
   })
 })

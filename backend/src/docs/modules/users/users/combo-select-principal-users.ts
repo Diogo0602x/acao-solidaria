@@ -1,11 +1,11 @@
 const comboSelectPrincipalUsers = {
-  tags: ['Principal Users'],
-  description: 'Get combo select data for all principal users',
+  tags: ['Users'],
+  description:
+    'Get a combo select list of all principal users (church or seminary)',
   operationId: 'comboSelectPrincipalUsers',
   responses: {
     '200': {
-      description:
-        'List of principal users for combo select retrieved successfully',
+      description: 'List of principal users',
       content: {
         'application/json': {
           schema: {
@@ -19,27 +19,9 @@ const comboSelectPrincipalUsers = {
             },
           },
           example: [
-            {
-              label: 'Igreja de São Paulo',
-              value: 'principal_user_id',
-            },
+            { label: 'Church 1', value: 'principal_user_id_1' },
+            { label: 'Seminary 2', value: 'principal_user_id_2' },
           ],
-        },
-      },
-    },
-    '400': {
-      description: 'Bad request',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              message: { type: 'string' },
-            },
-          },
-          example: {
-            message: 'Invalid input data',
-          },
         },
       },
     },

@@ -1,21 +1,21 @@
 const listUserById = {
   tags: ['Users'],
-  description: 'Get a user (Priest, Seminarist, or Pilgrim) by ID',
+  description: 'Get user by ID',
   operationId: 'listUserById',
   parameters: [
     {
-      name: 'userId',
+      name: 'id',
       in: 'path',
       required: true,
+      description: 'ID of the user to retrieve',
       schema: {
         type: 'string',
       },
-      description: 'User ID',
     },
   ],
   responses: {
     '200': {
-      description: 'User retrieved successfully',
+      description: 'User details',
       content: {
         'application/json': {
           schema: {

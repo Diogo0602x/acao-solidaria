@@ -1,85 +1,38 @@
 import { FakeFundraisingRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-repository'
-import { FakePrincipalUserRepository } from '@modules/users/repositories/fakes/fake-principal-user-repository'
-import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { ListFundraisingByIdUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-by-id/list-fundraising-by-id-usecase'
-import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
 
 let fakeFundraisingRepository: FakeFundraisingRepository
-let fakePrincipalUserRepository: FakePrincipalUserRepository
-let fakeUserRepository: FakeUserRepository
 let listFundraisingById: ListFundraisingByIdUseCase
-let createFundraising: CreateFundraisingUseCase
 
 describe('ListFundraisingById', () => {
   beforeEach(() => {
     fakeFundraisingRepository = new FakeFundraisingRepository()
-    fakePrincipalUserRepository = new FakePrincipalUserRepository()
-    fakeUserRepository = new FakeUserRepository()
     listFundraisingById = new ListFundraisingByIdUseCase(
       fakeFundraisingRepository,
     )
-    createFundraising = new CreateFundraisingUseCase(
-      fakeFundraisingRepository,
-      fakePrincipalUserRepository,
-      fakeUserRepository,
-    )
   })
 
-  it('should be able to list a fundraising by id', async () => {
-    const principalUser = await fakePrincipalUserRepository.create({
-      name: 'Igreja de São Paulo',
-      email: 'contact@igrejaspaulo.com.br',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'church',
-      cnpj: '12.345.678/0001-99',
-      telephone: '(11) 1234-5678',
-      cellphone: '(11) 91234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-        complement: 'Próximo ao metrô',
-      },
-    })
-
-    const user = await fakeUserRepository.create({
-      name: 'João Silva',
-      email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'priest',
-      cpf: '123.456.789-00',
-      telephone: '(11) 1234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-      },
-      linkedTo: principalUser.id,
-    })
-
-    const fundraising = await createFundraising.execute({
-      name: 'Calendário',
-      quantity: 1000,
-      quantityAvailable: 1000,
+  it('should be able to list a fundraising by ID', async () => {
+    const createdFundraising = await fakeFundraisingRepository.create({
+      name: 'Raffle',
+      quantity: 100,
+      quantityAvailable: 100,
       price: 10,
-      imageUrl: 'http://example.com/imagem.jpg',
-      userId: user.id,
+      imageUrl: 'http://example.com/image.jpg',
+      userId: 'user_id',
     })
 
-    const foundFundraising = await listFundraisingById.execute(fundraising.id)
+    const fundraising = await listFundraisingById.execute(
+      createdFundraising._id as string,
+    )
 
-    expect(foundFundraising).toHaveProperty('id')
+    expect(fundraising).toHaveProperty('_id')
+    expect(fundraising?.name).toBe('Raffle')
   })
 
-  it('should throw an error if fundraising not found', async () => {
+  it('should not be able to list a non-existing fundraising', async () => {
     await expect(
-      listFundraisingById.execute('non-existing-id'),
-    ).rejects.toThrow('The fundraising id does not exist')
+      listFundraisingById.execute('non_existing_id'),
+    ).rejects.toBeInstanceOf(Error)
   })
 })

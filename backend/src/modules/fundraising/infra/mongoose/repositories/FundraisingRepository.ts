@@ -15,22 +15,15 @@ class FundraisingRepository implements IFundraisingRepository {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return null
     }
-    const fundraising = await Fundraising.findById(id)
-      .populate('user')
-      .populate('principalUser')
-      .exec()
-    return fundraising
+    return Fundraising.findById(id).populate('user').exec()
   }
 
   public async findAll(): Promise<Fundraising[]> {
-    return Fundraising.find().populate('user').populate('principalUser').exec()
+    return Fundraising.find().populate('user').exec()
   }
 
   public async findByUserId(userId: string): Promise<Fundraising[]> {
-    return Fundraising.find({ user: userId })
-      .populate('user')
-      .populate('principalUser')
-      .exec()
+    return Fundraising.find({ user: userId }).populate('user').exec()
   }
 
   public async update(

@@ -4,7 +4,7 @@ import { User } from '@modules/users/infra/mongoose/schemas/User'
 import { IUserRepository } from '@modules/users/repositories/IUserRepository'
 
 interface IRequest {
-  identifier: string // email or cpf
+  identifier: string // email, cpf, or cnpj
   password: string
 }
 
@@ -22,7 +22,7 @@ class AuthenticateUserUseCase {
     if (identifier.includes('@')) {
       user = await this.userRepository.findByEmail(identifier)
     } else {
-      user = await this.userRepository.findByCpf(identifier)
+      user = await this.userRepository.findByCnpjCpf(identifier)
     }
 
     if (!user) {

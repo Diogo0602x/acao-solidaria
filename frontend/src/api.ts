@@ -1,8 +1,7 @@
 import axios from 'axios'
-import { env } from 'process'
 
 const API = axios.create({
-  baseURL: env.REACT_APP_API_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 })
 
 export { API }

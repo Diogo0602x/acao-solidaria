@@ -5,18 +5,14 @@ import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserR
 class UpdateUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { userId } = request.params
-    const updateData = request.body
+    const data = request.body
     const userRepository = new UserRepository()
 
     const updateUserUseCase = new UpdateUserUseCase(userRepository)
 
-    const user = await updateUserUseCase.execute(userId, updateData)
+    const user = await updateUserUseCase.execute(userId, data)
 
-    if (!user) {
-      return response.status(404).json({ error: 'User not found' })
-    }
-
-    return response.json(user)
+    return response.status(200).json(user)
   }
 }
 

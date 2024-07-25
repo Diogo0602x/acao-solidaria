@@ -4,13 +4,14 @@ import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserR
 
 class DeleteUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
-    const { userId } = request.params
+    const { id } = request.params
     const userRepository = new UserRepository()
 
     const deleteUserUseCase = new DeleteUserUseCase(userRepository)
-    await deleteUserUseCase.execute(userId)
 
-    return response.status(200).json({ message: 'User deleted successfully' })
+    await deleteUserUseCase.execute(id)
+
+    return response.status(204).send()
   }
 }
 

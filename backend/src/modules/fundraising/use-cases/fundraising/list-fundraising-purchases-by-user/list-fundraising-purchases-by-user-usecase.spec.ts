@@ -1,96 +1,51 @@
 import { FakeFundraisingPurchaseRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-purchase-repository'
-import { FakeFundraisingRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-repository'
-import { FakePrincipalUserRepository } from '@modules/users/repositories/fakes/fake-principal-user-repository'
-import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { ListFundraisingPurchasesByUserUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-purchases-by-user/list-fundraising-purchases-by-user-usecase'
-import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
-import { PurchaseFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/purchase-fundraising/purchase-fundraising-usecase'
 
-let fakeFundraisingRepository: FakeFundraisingRepository
-let fakePrincipalUserRepository: FakePrincipalUserRepository
-let fakeUserRepository: FakeUserRepository
 let fakeFundraisingPurchaseRepository: FakeFundraisingPurchaseRepository
 let listFundraisingPurchasesByUser: ListFundraisingPurchasesByUserUseCase
-let createFundraising: CreateFundraisingUseCase
-let purchaseFundraising: PurchaseFundraisingUseCase
 
 describe('ListFundraisingPurchasesByUser', () => {
   beforeEach(() => {
-    fakeFundraisingRepository = new FakeFundraisingRepository()
-    fakePrincipalUserRepository = new FakePrincipalUserRepository()
-    fakeUserRepository = new FakeUserRepository()
     fakeFundraisingPurchaseRepository = new FakeFundraisingPurchaseRepository()
     listFundraisingPurchasesByUser = new ListFundraisingPurchasesByUserUseCase(
       fakeFundraisingPurchaseRepository,
     )
-    createFundraising = new CreateFundraisingUseCase(
-      fakeFundraisingRepository,
-      fakePrincipalUserRepository,
-      fakeUserRepository,
-    )
-    purchaseFundraising = new PurchaseFundraisingUseCase(
-      fakeFundraisingPurchaseRepository,
-      fakeFundraisingRepository,
-    )
   })
 
-  it('should be able to list all fundraising purchases by a user', async () => {
-    const principalUser = await fakePrincipalUserRepository.create({
-      name: 'Igreja de São Paulo',
-      email: 'contact@igrejaspaulo.com.br',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'church',
-      cnpj: '12.345.678/0001-99',
-      telephone: '(11) 1234-5678',
-      cellphone: '(11) 91234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-        complement: 'Próximo ao metrô',
-      },
+  it('should be able to list fundraising purchases by user', async () => {
+    await fakeFundraisingPurchaseRepository.create({
+      fundraising: 'fundraisingId1',
+      user: 'userId',
+      quantity: 1,
+      pricePurchased: 10,
+      priceSold: 15,
     })
 
-    const user = await fakeUserRepository.create({
-      name: 'João Silva',
-      email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'priest',
-      cpf: '123.456.789-00',
-      telephone: '(11) 1234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-      },
-      linkedTo: principalUser.id,
+    await fakeFundraisingPurchaseRepository.create({
+      fundraising: 'fundraisingId2',
+      user: 'userId',
+      quantity: 2,
+      pricePurchased: 20,
+      priceSold: 25,
     })
 
-    const fundraising = await createFundraising.execute({
-      name: 'Calendário',
-      quantity: 1000,
-      quantityAvailable: 1000,
-      price: 10,
-      imageUrl: 'http://example.com/imagem.jpg',
-      userId: user.id,
-    })
+    const purchases = await listFundraisingPurchasesByUser.execute('userId')
 
-    await purchaseFundraising.execute({
-      fundraisingId: fundraising.id,
-      userId: user.id,
-      quantity: 10,
-    })
-
-    const purchases = await listFundraisingPurchasesByUser.execute(user.id)
-
-    expect(purchases).toHaveLength(1)
-    expect(purchases[0].quantity).toBe(10)
-    expect(purchases[0].pricePurchased).toBe(100)
+    expect(purchases).toEqual([
+      expect.objectContaining({
+        fundraising: 'fundraisingId1',
+        user: 'userId',
+        quantity: 1,
+        pricePurchased: 10,
+        priceSold: 15,
+      }),
+      expect.objectContaining({
+        fundraising: 'fundraisingId2',
+        user: 'userId',
+        quantity: 2,
+        pricePurchased: 20,
+        priceSold: 25,
+      }),
+    ])
   })
 })

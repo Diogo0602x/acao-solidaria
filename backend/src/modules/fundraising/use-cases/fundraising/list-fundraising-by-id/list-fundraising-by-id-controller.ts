@@ -6,6 +6,7 @@ class ListFundraisingByIdController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { fundraisingId } = request.params
     const fundraisingRepository = new FundraisingRepository()
+
     const listFundraisingByIdUseCase = new ListFundraisingByIdUseCase(
       fundraisingRepository,
     )
@@ -15,10 +16,7 @@ class ListFundraisingByIdController {
         await listFundraisingByIdUseCase.execute(fundraisingId)
       return response.status(200).json(fundraising)
     } catch (error) {
-      if (error instanceof Error) {
-        return response.status(404).json({ message: error.message })
-      }
-      return response.status(500).json({ message: 'Internal server error' })
+      return response.status(404).json({ message: (error as Error).message })
     }
   }
 }

@@ -3,8 +3,9 @@ interface ICreateUserDTO {
   email: string
   password: string
   confirmPassword: string
-  role: 'priest' | 'seminarist' | 'pilgrim'
-  cpf: string
+  role: 'church' | 'seminary' | 'priest' | 'seminarist' | 'pilgrim'
+  cpf?: string
+  cnpj?: string
   telephone: string
   cellphone?: string
   address: {
@@ -15,7 +16,7 @@ interface ICreateUserDTO {
     zipCode: string
     complement?: string
   }
-  linkedTo: string // ID da Church ou Seminary ao qual está vinculado
+  linkedTo?: string // ID of the Church or Seminary the user is linked to
 }
 
 export { ICreateUserDTO }

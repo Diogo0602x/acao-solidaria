@@ -14,12 +14,13 @@ interface User extends Document {
   email: string
   password: string
   confirmPassword?: string
-  role: 'priest' | 'seminarist' | 'pilgrim'
-  cpf: string
+  role: 'church' | 'seminary' | 'priest' | 'seminarist' | 'pilgrim'
+  cpf?: string
+  cnpj?: string
   telephone: string
   cellphone?: string
   address: Address
-  linkedTo: Schema.Types.ObjectId
+  linkedTo?: Schema.Types.ObjectId
 }
 
 const UserSchema = new Schema<User>({
@@ -27,7 +28,8 @@ const UserSchema = new Schema<User>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  cpf: { type: String, required: true },
+  cpf: { type: String },
+  cnpj: { type: String },
   telephone: { type: String, required: true },
   cellphone: { type: String },
   address: {
@@ -40,8 +42,7 @@ const UserSchema = new Schema<User>({
   },
   linkedTo: {
     type: Schema.Types.ObjectId,
-    ref: 'PrincipalUser',
-    required: true,
+    ref: 'User',
   },
 })
 

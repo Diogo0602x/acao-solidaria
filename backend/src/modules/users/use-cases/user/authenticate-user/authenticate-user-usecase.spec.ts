@@ -1,24 +1,22 @@
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { AuthenticateUserUseCase } from '@modules/users/use-cases/user/authenticate-user/authenticate-user-usecase'
-import { CreateUserUseCase } from '@modules/users/use-cases/user/create-user/create-user-usecase'
+import { hash } from 'bcryptjs'
 
 let fakeUserRepository: FakeUserRepository
 let authenticateUser: AuthenticateUserUseCase
-let createUser: CreateUserUseCase
 
 describe('AuthenticateUser', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     authenticateUser = new AuthenticateUserUseCase(fakeUserRepository)
-    createUser = new CreateUserUseCase(fakeUserRepository)
   })
 
   it('should be able to authenticate a user by email', async () => {
-    await createUser.execute({
+    await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
+      password: await hash('senha123', 8),
+      confirmPassword: await hash('senha123', 8),
       role: 'priest',
       cpf: '123.456.789-00',
       telephone: '(11) 1234-5678',
@@ -38,14 +36,15 @@ describe('AuthenticateUser', () => {
     })
 
     expect(response).toHaveProperty('token')
+    expect(response).toHaveProperty('user')
   })
 
-  it('should be able to authenticate a user by cpf', async () => {
-    await createUser.execute({
+  it('should be able to authenticate a user by cpf/cnpj', async () => {
+    await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
+      password: await hash('senha123', 8),
+      confirmPassword: await hash('senha123', 8),
       role: 'priest',
       cpf: '123.456.789-00',
       telephone: '(11) 1234-5678',
@@ -65,23 +64,24 @@ describe('AuthenticateUser', () => {
     })
 
     expect(response).toHaveProperty('token')
+    expect(response).toHaveProperty('user')
   })
 
-  it('should not authenticate with invalid identifier', async () => {
+  it('should not authenticate with invalid credentials', async () => {
     await expect(
       authenticateUser.execute({
         identifier: 'invalid@example.com',
-        password: 'senha123',
+        password: 'invalidpassword',
       }),
-    ).rejects.toThrowError('Invalid identifier or password')
+    ).rejects.toThrow('Invalid identifier or password')
   })
 
-  it('should not authenticate with incorrect password', async () => {
-    await createUser.execute({
+  it('should not authenticate with a valid identifier but invalid password', async () => {
+    await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
+      password: await hash('senha123', 8),
+      confirmPassword: await hash('senha123', 8),
       role: 'priest',
       cpf: '123.456.789-00',
       telephone: '(11) 1234-5678',
@@ -100,6 +100,6 @@ describe('AuthenticateUser', () => {
         identifier: 'joao.silva@example.com',
         password: 'wrongpassword',
       }),
-    ).rejects.toThrowError('Invalid identifier or password')
+    ).rejects.toThrow('Invalid identifier or password')
   })
 })

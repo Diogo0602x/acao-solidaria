@@ -1,8 +1,10 @@
 import { v4 as uuid } from 'uuid'
 import { User } from '@modules/users/infra/mongoose/schemas/User'
 import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO'
+import { IUpdateUserDTO } from '@modules/users/dtos/IUpdateUserDTO'
+import { IUserRepository } from '../IUserRepository'
 
-class FakeUserRepository {
+class FakeUserRepository implements IUserRepository {
   private users: User[] = []
 
   public async create(data: ICreateUserDTO): Promise<User> {
@@ -25,8 +27,10 @@ class FakeUserRepository {
     return user || null
   }
 
-  public async findByCpf(cpf: string): Promise<User | null> {
-    const user = this.users.find((user) => user.cpf === cpf)
+  public async findByCnpjCpf(identifier: string): Promise<User | null> {
+    const user = this.users.find(
+      (user) => user.cpf === identifier || user.cnpj === identifier,
+    )
     return user || null
   }
 
@@ -42,7 +46,7 @@ class FakeUserRepository {
 
   public async update(
     id: string,
-    data: Partial<ICreateUserDTO>,
+    data: Partial<IUpdateUserDTO>,
   ): Promise<User | null> {
     const index = this.users.findIndex((user) => user.id === id)
     if (index !== -1) {

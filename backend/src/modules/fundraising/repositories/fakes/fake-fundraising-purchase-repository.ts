@@ -1,6 +1,6 @@
-import { v4 as uuid } from 'uuid'
-import { FundraisingPurchase } from '@modules/fundraising/infra/mongoose/schemas/FundraisingPurchase'
 import { IFundraisingPurchaseRepository } from '@modules/fundraising/repositories/IFundraisingPurchaseRepository'
+import { FundraisingPurchase } from '@modules/fundraising/infra/mongoose/schemas/FundraisingPurchase'
+import { ObjectId } from 'bson'
 
 class FakeFundraisingPurchaseRepository
   implements IFundraisingPurchaseRepository
@@ -14,13 +14,13 @@ class FakeFundraisingPurchaseRepository
     pricePurchased: number
     priceSold: number
   }): Promise<FundraisingPurchase> {
-    const fundraisingPurchase = new FundraisingPurchase()
-
-    Object.assign(fundraisingPurchase, { id: uuid() }, data)
-
-    this.fundraisingPurchases.push(fundraisingPurchase)
-
-    return fundraisingPurchase
+    const purchase: FundraisingPurchase = {
+      ...data,
+      _id: new ObjectId().toString(),
+      id: new ObjectId().toString(),
+    } as unknown as FundraisingPurchase
+    this.fundraisingPurchases.push(purchase)
+    return purchase
   }
 
   public async findByUserId(userId: string): Promise<FundraisingPurchase[]> {

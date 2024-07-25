@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { AuthenticateUserUseCase } from './authenticate-user-usecase'
+import { AuthenticateUserUseCase } from '@users/use-cases'
 import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
 
 class AuthenticateUserController {

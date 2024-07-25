@@ -1,97 +1,55 @@
-import { FakeFundraisingPurchaseRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-purchase-repository'
 import { FakeFundraisingRepository } from '@modules/fundraising/repositories/fakes/fake-fundraising-repository'
-import { FakePrincipalUserRepository } from '@modules/users/repositories/fakes/fake-principal-user-repository'
-import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { ListFundraisingSalesByUserUseCase } from '@modules/fundraising/use-cases/fundraising/list-fundraising-sales-by-user/list-fundraising-sales-by-user-usecase'
-import { CreateFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/create-fundraising/create-fundraising-usecase'
-import { PurchaseFundraisingUseCase } from '@modules/fundraising/use-cases/fundraising/purchase-fundraising/purchase-fundraising-usecase'
 
 let fakeFundraisingRepository: FakeFundraisingRepository
-let fakePrincipalUserRepository: FakePrincipalUserRepository
-let fakeUserRepository: FakeUserRepository
-let fakeFundraisingPurchaseRepository: FakeFundraisingPurchaseRepository
 let listFundraisingSalesByUser: ListFundraisingSalesByUserUseCase
-let createFundraising: CreateFundraisingUseCase
-let purchaseFundraising: PurchaseFundraisingUseCase
 
 describe('ListFundraisingSalesByUser', () => {
   beforeEach(() => {
     fakeFundraisingRepository = new FakeFundraisingRepository()
-    fakePrincipalUserRepository = new FakePrincipalUserRepository()
-    fakeUserRepository = new FakeUserRepository()
-    fakeFundraisingPurchaseRepository = new FakeFundraisingPurchaseRepository()
     listFundraisingSalesByUser = new ListFundraisingSalesByUserUseCase(
-      fakeFundraisingRepository,
-      fakeFundraisingPurchaseRepository,
-    )
-    createFundraising = new CreateFundraisingUseCase(
-      fakeFundraisingRepository,
-      fakePrincipalUserRepository,
-      fakeUserRepository,
-    )
-    purchaseFundraising = new PurchaseFundraisingUseCase(
-      fakeFundraisingPurchaseRepository,
       fakeFundraisingRepository,
     )
   })
 
-  it('should be able to list all fundraising sales by a user', async () => {
-    const principalUser = await fakePrincipalUserRepository.create({
-      name: 'Igreja de São Paulo',
-      email: 'contact@igrejaspaulo.com.br',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'church',
-      cnpj: '12.345.678/0001-99',
-      telephone: '(11) 1234-5678',
-      cellphone: '(11) 91234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-        complement: 'Próximo ao metrô',
-      },
-    })
-
-    const user = await fakeUserRepository.create({
-      name: 'João Silva',
-      email: 'joao.silva@example.com',
-      password: 'senha123',
-      confirmPassword: 'senha123',
-      role: 'priest',
-      cpf: '123.456.789-00',
-      telephone: '(11) 1234-5678',
-      address: {
-        street: 'Rua da Consolação',
-        neighborhood: 'Centro',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '01000-000',
-      },
-      linkedTo: principalUser.id,
-    })
-
-    const fundraising = await createFundraising.execute({
-      name: 'Calendário',
-      quantity: 1000,
-      quantityAvailable: 1000,
+  it('should be able to list fundraising sales by user', async () => {
+    await fakeFundraisingRepository.create({
+      name: 'Fundraising 1',
+      quantity: 100,
+      quantityAvailable: 100,
       price: 10,
-      imageUrl: 'http://example.com/imagem.jpg',
-      userId: user.id,
+      imageUrl: 'http://example.com/image1.jpg',
+      userId: 'userId',
     })
 
-    await purchaseFundraising.execute({
-      fundraisingId: fundraising.id,
-      userId: user.id,
-      quantity: 10,
+    await fakeFundraisingRepository.create({
+      name: 'Fundraising 2',
+      quantity: 200,
+      quantityAvailable: 200,
+      price: 20,
+      imageUrl: 'http://example.com/image2.jpg',
+      userId: 'userId',
     })
 
-    const sales = await listFundraisingSalesByUser.execute(user.id)
+    const sales = await listFundraisingSalesByUser.execute('userId')
 
-    expect(sales).toHaveLength(1)
-    expect(sales[0].quantitySold).toBe(10)
-    expect(sales[0].priceSold).toBe(100)
+    expect(sales).toEqual([
+      expect.objectContaining({
+        name: 'Fundraising 1',
+        quantity: 100,
+        quantityAvailable: 100,
+        price: 10,
+        imageUrl: 'http://example.com/image1.jpg',
+        user: 'userId',
+      }),
+      expect.objectContaining({
+        name: 'Fundraising 2',
+        quantity: 200,
+        quantityAvailable: 200,
+        price: 20,
+        imageUrl: 'http://example.com/image2.jpg',
+        user: 'userId',
+      }),
+    ])
   })
 })

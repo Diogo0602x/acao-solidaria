@@ -7,8 +7,7 @@ interface Fundraising extends Document {
   quantitySold: number
   price: number
   imageUrl: string
-  user?: Schema.Types.ObjectId
-  principalUser?: Schema.Types.ObjectId
+  user: Schema.Types.ObjectId
   pixKeyCpf?: string
   pixKeyCnpj?: string
 }
@@ -20,8 +19,7 @@ const FundraisingSchema = new Schema<Fundraising>({
   quantitySold: { type: Number, default: 0 },
   price: { type: Number, required: true },
   imageUrl: { type: String, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
-  principalUser: { type: Schema.Types.ObjectId, ref: 'PrincipalUser' },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   pixKeyCpf: { type: String },
   pixKeyCnpj: { type: String },
 })

@@ -3,14 +3,12 @@ import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundr
 class DeleteFundraisingUseCase {
   constructor(private fundraisingRepository: IFundraisingRepository) {}
 
-  public async execute(id: string): Promise<void> {
-    const fundraising = await this.fundraisingRepository.findById(id)
-
+  public async execute(fundraisingId: string): Promise<void> {
+    const fundraising = await this.fundraisingRepository.findById(fundraisingId)
     if (!fundraising) {
       throw new Error('Fundraising not found')
     }
-
-    await this.fundraisingRepository.delete(id)
+    await this.fundraisingRepository.delete(fundraisingId)
   }
 }
 

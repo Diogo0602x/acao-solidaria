@@ -1,25 +1,8 @@
-import {
-  UsersRoutes,
-  PrincipalUserRoutes,
-  AddressRoutes,
-  FundraisingRoutes,
-} from '@docs/modules'
+import { UsersRoutes, AddressRoutes, FundraisingRoutes } from '@docs/modules'
 
 const routes = {
   '/address/{cep}': {
     get: AddressRoutes.getAddressByCep,
-  },
-  '/principal-users': {
-    post: PrincipalUserRoutes.createPrincipalUser,
-    get: PrincipalUserRoutes.listPrincipalUser,
-  },
-  '/principal-users/{principalUserId}': {
-    get: PrincipalUserRoutes.listPrincipalUserById,
-    put: PrincipalUserRoutes.updatePrincipalUser,
-    delete: PrincipalUserRoutes.deletePrincipalUser,
-  },
-  '/principal-users/combo-select': {
-    get: PrincipalUserRoutes.comboSelectPrincipalUsers,
   },
   '/users': {
     post: UsersRoutes.createUser,
@@ -29,6 +12,12 @@ const routes = {
     get: UsersRoutes.listUserById,
     put: UsersRoutes.updateUser,
     delete: UsersRoutes.deleteUser,
+  },
+  '/users/principal-users/combo-select': {
+    get: UsersRoutes.comboSelectPrincipalUsers,
+  },
+  '/users/login': {
+    get: UsersRoutes.authenticateUser,
   },
   '/fundraising': {
     post: FundraisingRoutes.createFundraising,

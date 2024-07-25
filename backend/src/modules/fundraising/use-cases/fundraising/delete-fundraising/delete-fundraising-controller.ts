@@ -4,8 +4,8 @@ import { FundraisingRepository } from '@modules/fundraising/infra/mongoose/repos
 class DeleteFundraisingController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { fundraisingId } = request.params
-
     const fundraisingRepository = new FundraisingRepository()
+
     const deleteFundraisingUseCase = new DeleteFundraisingUseCase(
       fundraisingRepository,
     )

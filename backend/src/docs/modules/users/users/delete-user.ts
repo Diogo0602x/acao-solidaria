@@ -1,16 +1,16 @@
 const deleteUser = {
   tags: ['Users'],
-  description: 'Delete a user (Priest, Seminarist, or Pilgrim) by ID',
+  description: 'Delete a user by ID',
   operationId: 'deleteUser',
   parameters: [
     {
-      name: 'userId',
+      name: 'id',
       in: 'path',
       required: true,
+      description: 'ID of the user to delete',
       schema: {
         type: 'string',
       },
-      description: 'User ID',
     },
   ],
   responses: {

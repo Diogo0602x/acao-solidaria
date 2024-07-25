@@ -1,6 +1,6 @@
-const autenticateUser = {
+const authenticateUser = {
   tags: ['Users'],
-  description: 'Authenticate user (Priest, Seminarist, or Pilgrim)',
+  description: 'Authenticate user and generate JWT',
   operationId: 'authenticateUser',
   requestBody: {
     content: {
@@ -8,21 +8,21 @@ const autenticateUser = {
         schema: {
           type: 'object',
           properties: {
-            identifier: { type: 'string' }, // email or cpf
+            identifier: { type: 'string' }, // email, cpf, or cnpj
             password: { type: 'string' },
           },
           required: ['identifier', 'password'],
         },
         example: {
           identifier: 'user@example.com',
-          password: 'senha123',
+          password: 'password123',
         },
       },
     },
   },
   responses: {
     '200': {
-      description: 'User authenticated successfully',
+      description: 'Authentication successful',
       content: {
         'application/json': {
           schema: {
@@ -35,21 +35,6 @@ const autenticateUser = {
                   name: { type: 'string' },
                   email: { type: 'string' },
                   role: { type: 'string' },
-                  cpf: { type: 'string' },
-                  telephone: { type: 'string' },
-                  cellphone: { type: 'string' },
-                  address: {
-                    type: 'object',
-                    properties: {
-                      street: { type: 'string' },
-                      neighborhood: { type: 'string' },
-                      city: { type: 'string' },
-                      state: { type: 'string' },
-                      zipCode: { type: 'string' },
-                      complement: { type: 'string' },
-                    },
-                  },
-                  linkedTo: { type: 'string' },
                 },
               },
               token: { type: 'string' },
@@ -61,18 +46,6 @@ const autenticateUser = {
               name: 'John Doe',
               email: 'user@example.com',
               role: 'priest',
-              cpf: '123.456.789-00',
-              telephone: '(11) 1234-5678',
-              cellphone: '(11) 91234-5678',
-              address: {
-                street: 'Rua da Consolação',
-                neighborhood: 'Centro',
-                city: 'São Paulo',
-                state: 'SP',
-                zipCode: '01000-000',
-                complement: 'Próximo ao metrô',
-              },
-              linkedTo: 'principal_user_id',
             },
             token: 'jwt_token',
           },
@@ -80,23 +53,7 @@ const autenticateUser = {
       },
     },
     '400': {
-      description: 'Bad request',
-      content: {
-        'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              message: { type: 'string' },
-            },
-          },
-          example: {
-            message: 'Invalid input data',
-          },
-        },
-      },
-    },
-    '401': {
-      description: 'Unauthorized',
+      description: 'Invalid credentials',
       content: {
         'application/json': {
           schema: {
@@ -130,4 +87,4 @@ const autenticateUser = {
   },
 }
 
-export { autenticateUser }
+export { authenticateUser }
