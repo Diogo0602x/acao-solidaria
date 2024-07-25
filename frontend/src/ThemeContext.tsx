@@ -51,15 +51,85 @@ const createCustomTheme = (): Theme => {
     },
     typography: {
       fontFamily: 'Montserrat, sans-serif',
+      allVariants: {
+        color: getCSSVariableValue('--text-secondary'),
+      },
     },
     components: {
       MuiButton: {
         styleOverrides: {
           root: {
-            backgroundColor: getCSSVariableValue('--primary'), // '#ffffff'
-            color: getCSSVariableValue('--text-primary'), // '#ffffff'
+            backgroundColor: getCSSVariableValue('--secondary'), // '#100605'
+            color: getCSSVariableValue('--primary'), // '#FFFFFF'
             '&:hover': {
-              backgroundColor: getCSSVariableValue('--primary-hover'), // '#100605'
+              backgroundColor: getCSSVariableValue('--secondary'), // '#301614'
+              color: getCSSVariableValue('--primary'), // '#FFFFFF'
+            },
+          },
+        },
+      },
+      MuiSelect: {
+        styleOverrides: {
+          select: {
+            backgroundColor: getCSSVariableValue('--primary'), // White background
+            color: getCSSVariableValue('--text-secondary'), // Dark text
+            '&:hover': {
+              borderColor: getCSSVariableValue('--secondary'), // Dark hover border
+            },
+          },
+          icon: {
+            color: getCSSVariableValue('--text-secondary'), // Dark icon
+          },
+        },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            backgroundColor: getCSSVariableValue('--primary'), // White background
+            color: getCSSVariableValue('--text-secondary'), // Dark text
+            '&.Mui-selected': {
+              backgroundColor: getCSSVariableValue('--secondary-foreground'), // Highlight selected item
+              color: getCSSVariableValue('--text-primary'), // Highlight text color
+            },
+            '&:hover': {
+              backgroundColor: getCSSVariableValue('--secondary-foreground'), // Hover background
+              color: getCSSVariableValue('--text-primary'), // Hover text color
+            },
+          },
+        },
+      },
+      MuiInputBase: {
+        styleOverrides: {
+          input: {
+            backgroundColor: getCSSVariableValue('--primary'), // White background for input
+            color: getCSSVariableValue('--text-secondary'), // Dark text for input
+            '&:hover': {
+              borderColor: getCSSVariableValue('--secondary'), // Dark hover border
+            },
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: getCSSVariableValue('--secondary'), // Dark focused border
+            },
+          },
+          notchedOutline: {
+            borderColor: getCSSVariableValue('--secondary'), // Default border
+            '&:hover': {
+              borderColor: getCSSVariableValue('--secondary'), // Dark hover border
+            },
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            color: getCSSVariableValue('--text-secondary'), // Dark text for label
+            '&.Mui-focused': {
+              color: getCSSVariableValue('--text-secondary'), // Dark text for focused label
             },
           },
         },

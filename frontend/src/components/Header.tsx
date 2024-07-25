@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { AppBar, Toolbar, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
+import { useNavigate } from 'react-router-dom'
 
 const StyledAppBar = styled(AppBar)(() => ({
   transition: 'background-color 0.3s',
@@ -8,6 +9,7 @@ const StyledAppBar = styled(AppBar)(() => ({
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
+  const navigate = useNavigate()
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
@@ -43,24 +45,27 @@ const Header: React.FC = () => {
             variant="outlined"
             sx={{
               marginRight: 2,
-              backgroundColor: 'primary.main',
-              color: 'primary.light',
+              backgroundColor: 'primary.light',
+              color: 'primary.main',
               '&:hover': {
                 borderColor: isScrolled ? 'primary.light' : 'primary.light',
                 color: 'primary.light',
               },
             }}
+            onClick={() => navigate('/signup')}
           >
             Cadastrar-se
           </Button>
           <Button
             variant="outlined"
             sx={{
-              borderColor: isScrolled ? 'primary.light' : 'primary.main',
-              color: 'primary.main',
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+              color: isScrolled ? 'light' : 'primary.light',
               '&:hover': {
                 borderColor: 'primary.light',
                 color: 'primary.light',
+                backgroundColor: 'transparent',
               },
             }}
           >
