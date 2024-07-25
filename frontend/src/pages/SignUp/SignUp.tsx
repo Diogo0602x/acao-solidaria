@@ -5,6 +5,7 @@ import { createUser, getAddressByCep } from '@/pages/SignUp/service'
 import { validationSchema } from '@/pages/SignUp/validationSchema'
 import { UserForm } from '@/pages/SignUp/components/UserForm'
 import { AddressForm } from '@/pages/SignUp/components/AddressForm'
+import { initalValues } from './commons'
 
 const SignUp: React.FC = () => {
   const handleCepChange = async (
@@ -43,26 +44,7 @@ const SignUp: React.FC = () => {
       }}
     >
       <Formik
-        initialValues={{
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-          role: '',
-          cpf: '',
-          cnpj: '',
-          telephone: '',
-          cellphone: '',
-          address: {
-            street: '',
-            neighborhood: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            complement: '',
-          },
-          linkedTo: '',
-        }}
+        initialValues={initalValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           try {

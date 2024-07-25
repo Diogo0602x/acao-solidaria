@@ -12,7 +12,12 @@ const Footer: React.FC = () => {
     >
       <Container maxWidth="lg">
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="body2" align="center" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ flexGrow: 1 }}
+            color="text.primary"
+          >
             &copy; {new Date().getFullYear()} Jornada Solidária
           </Typography>
           <Box mx={1}>
