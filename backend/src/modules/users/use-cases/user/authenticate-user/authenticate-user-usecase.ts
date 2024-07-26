@@ -26,13 +26,13 @@ class AuthenticateUserUseCase {
     }
 
     if (!user) {
-      throw new Error('Invalid identifier or password')
+      throw new Error('Identificador ou senha inválidos')
     }
 
     const passwordMatched = await compare(password, user.password)
 
     if (!passwordMatched) {
-      throw new Error('Invalid identifier or password')
+      throw new Error('Identificador ou senha inválidos')
     }
 
     const token = sign({}, 'secret', {

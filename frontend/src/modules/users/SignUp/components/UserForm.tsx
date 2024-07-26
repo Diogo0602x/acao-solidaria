@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useFormikContext, Field, getIn } from 'formik'
 import { UserRole } from '@/enums'
-import { getPrincipalUsers as fetchPrincipalUsers } from '@/pages/SignUp/service'
+import { getPrincipalUsers as fetchPrincipalUsers } from '@/modules/users/SignUp/service'
 import { MaskedInput } from '@/components/MaskedInput'
 
 const UserForm: React.FC = () => {

@@ -10,9 +10,10 @@ import {
 import { Formik, Form, Field, getIn } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { AlertMessage } from '@/components/AlertMessage'
-import { loginUser } from '@/pages/Login/service'
-import { validationSchema } from '@/pages/Login/validationSchema'
-import { IdentifierInput } from '@/pages/Login/components/IdentifierInput'
+import { loginUser } from '@/modules/users/Login/service'
+import { validationSchema } from '@/modules/users/Login/validationSchema'
+import { IdentifierInput } from '@/modules/users/Login/components/IdentifierInput'
+import { useAuth } from '@/auth/AuthProvider'
 
 const Login: React.FC = () => {
   const [message, setMessage] = useState<{
@@ -20,6 +21,7 @@ const Login: React.FC = () => {
     text: string
   } | null>(null)
   const navigate = useNavigate()
+  const { login, checkAuth } = useAuth()
 
   const initialValues = {
     identifier: '',
@@ -30,6 +32,10 @@ const Login: React.FC = () => {
     try {
       const response = await loginUser(values)
       if (response.status === 200) {
+        const { user, token } = response.data
+        login(user, token)
+        checkAuth()
+
         setMessage({ type: 'success', text: 'Login realizado com sucesso' })
         setTimeout(() => {
           navigate('/')
@@ -38,7 +44,9 @@ const Login: React.FC = () => {
         setMessage({ type: 'error', text: response.data.error })
       }
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message })
+      const errorMessage =
+        error.response?.data?.message || 'Erro ao fazer login'
+      setMessage({ type: 'error', text: errorMessage })
     } finally {
       setSubmitting(false)
     }

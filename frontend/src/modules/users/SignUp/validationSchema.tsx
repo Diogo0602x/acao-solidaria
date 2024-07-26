@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import { UserRole } from '../../enums'
+import { UserRole } from '@/enums'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),

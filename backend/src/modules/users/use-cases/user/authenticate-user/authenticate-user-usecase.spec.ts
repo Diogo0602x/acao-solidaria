@@ -73,7 +73,7 @@ describe('AuthenticateUser', () => {
         identifier: 'invalid@example.com',
         password: 'invalidpassword',
       }),
-    ).rejects.toThrow('Invalid identifier or password')
+    ).rejects.toThrow('Identificador ou senha inválidos')
   })
 
   it('should not authenticate with a valid identifier but invalid password', async () => {
@@ -100,6 +100,6 @@ describe('AuthenticateUser', () => {
         identifier: 'joao.silva@example.com',
         password: 'wrongpassword',
       }),
-    ).rejects.toThrow('Invalid identifier or password')
+    ).rejects.toThrow('Identificador ou senha inválidos')
   })
 })

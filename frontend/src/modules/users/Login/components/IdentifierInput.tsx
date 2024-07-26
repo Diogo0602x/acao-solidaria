@@ -53,7 +53,7 @@ const IdentifierInput: React.FC<IdentifierInputProps> = ({
     <Box display="flex" flexDirection="column">
       <TextField
         select
-        label="Tipo"
+        label="Tipo de login"
         value={type}
         onChange={handleTypeChange}
         variant="outlined"
