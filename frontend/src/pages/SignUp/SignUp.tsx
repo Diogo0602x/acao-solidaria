@@ -71,21 +71,39 @@ const SignUp: React.FC = () => {
                 maxHeight: '90vh',
               }}
             >
-              <Typography variant="h4" component="h1" gutterBottom>
-                Sign Up
+              <Typography
+                variant="h4"
+                component="h1"
+                gutterBottom
+                sx={{ textAlign: 'center', fontWeight: 'medium' }}
+              >
+                Cadastro
               </Typography>
               <UserForm />
-              <Typography variant="h6" component="h2" gutterBottom>
-                Address
+              <Typography
+                variant="h6"
+                component="h2"
+                gutterBottom
+                sx={{ textAlign: 'center', fontWeight: 'medium' }}
+              >
+                Endereço
               </Typography>
               <AddressForm
                 handleCepChange={(cep: string) =>
                   handleCepChange(cep, setFieldValue, setFieldError)
                 }
               />
-              <Button type="submit" variant="contained">
-                Sign Up
-              </Button>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  marginTop: 2,
+                }}
+              >
+                <Button type="submit" variant="contained">
+                  Cadastrar-se
+                </Button>
+              </Box>
             </Box>
           </Form>
         )}

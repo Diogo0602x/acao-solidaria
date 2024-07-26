@@ -51,7 +51,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
       <Field
         name="address.street"
         as={TextField}
-        label="Street"
+        label="Logradouro"
         fullWidth
         margin="normal"
         error={Boolean(
@@ -66,7 +66,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
       <Field
         name="address.neighborhood"
         as={TextField}
-        label="Neighborhood"
+        label="Bairro"
         fullWidth
         margin="normal"
         error={Boolean(
@@ -83,7 +83,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
       <Field
         name="address.city"
         as={TextField}
-        label="City"
+        label="Cidade"
         fullWidth
         margin="normal"
         error={Boolean(
@@ -98,7 +98,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
       <Field
         name="address.state"
         as={TextField}
-        label="State"
+        label="Estado"
         fullWidth
         margin="normal"
         error={Boolean(
@@ -113,7 +113,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
       <Field
         name="address.complement"
         as={TextField}
-        label="Complement"
+        label="Complemento"
         fullWidth
         margin="normal"
         error={Boolean(

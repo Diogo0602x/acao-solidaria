@@ -2,46 +2,49 @@ import * as Yup from 'yup'
 import { UserRole } from '../../enums'
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
+  name: Yup.string().required('Nome é obrigatório'),
+  email: Yup.string().email('Email inválido').required('Email é obrigatório'),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .min(6, 'A senha deve ter pelo menos 6 caracteres')
+    .required('Senha é obrigatória'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Confirm password is required'),
+    .oneOf([Yup.ref('password'), null], 'As senhas devem coincidir')
+    .required('Confirmação de senha é obrigatória'),
   role: Yup.mixed()
-    .oneOf(Object.values(UserRole), 'Role is required')
-    .required('Role is required'),
+    .oneOf(
+      Object.values(UserRole),
+      'Escolha um papel válido: Igreja, Seminário, Padre, Seminarista ou Peregrino',
+    )
+    .required('Papel é obrigatório'),
   cpf: Yup.string().when('role', {
     is: (role: UserRole) =>
       [UserRole.PRIEST, UserRole.SEMINARIST, UserRole.PILGRIM].includes(role),
     then: (schema) =>
-      schema.required('CPF is required').min(14, 'Invalid CPF format'),
+      schema.required('CPF é obrigatório').min(14, 'Formato de CPF inválido'),
     otherwise: (schema) => schema.notRequired(),
   }),
   cnpj: Yup.string().when('role', {
     is: (role: UserRole) => [UserRole.CHURCH, UserRole.SEMINARY].includes(role),
     then: (schema) =>
-      schema.required('CNPJ is required').min(18, 'Invalid CNPJ format'),
+      schema.required('CNPJ é obrigatório').min(18, 'Formato de CNPJ inválido'),
     otherwise: (schema) => schema.notRequired(),
   }),
-  telephone: Yup.string().required('Telephone is required'),
+  telephone: Yup.string().required('Telefone é obrigatório'),
   cellphone: Yup.string().optional(),
   address: Yup.object().shape({
-    street: Yup.string().required('Street is required'),
-    neighborhood: Yup.string().required('Neighborhood is required'),
-    city: Yup.string().required('City is required'),
-    state: Yup.string().required('State is required'),
+    street: Yup.string().required('Rua é obrigatória'),
+    neighborhood: Yup.string().required('Bairro é obrigatório'),
+    city: Yup.string().required('Cidade é obrigatória'),
+    state: Yup.string().required('Estado é obrigatório'),
     zipCode: Yup.string()
-      .required('ZIP Code is required')
-      .min(9, 'Invalid ZIP Code format'),
+      .required('CEP é obrigatório')
+      .min(9, 'Formato de CEP inválido'),
     complement: Yup.string().optional(),
   }),
   linkedTo: Yup.string().when('role', {
     is: (role: UserRole) =>
       [UserRole.PRIEST, UserRole.SEMINARIST, UserRole.PILGRIM].includes(role),
-    then: (schema) => schema.required('Linked To is required'),
+    then: (schema) => schema.required('Vinculado a é obrigatório'),
     otherwise: (schema) => schema.notRequired(),
   }),
 })
