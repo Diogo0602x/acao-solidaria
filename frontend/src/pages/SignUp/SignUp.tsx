@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import { Formik, Form } from 'formik'
+import { useNavigate } from 'react-router-dom'
 import { createUser, getAddressByCep } from '@/pages/SignUp/service'
 import { validationSchema } from '@/pages/SignUp/validationSchema'
 import { UserForm } from '@/pages/SignUp/components/UserForm'
 import { AddressForm } from '@/pages/SignUp/components/AddressForm'
 import { initalValues } from './commons'
+import { AlertMessage } from '@/components/AlertMessage'
 
 const SignUp: React.FC = () => {
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error' | 'info' | 'warning'
+    text: string
+  } | null>(null)
+  const navigate = useNavigate()
+
   const handleCepChange = async (
     cep: string,
     setFieldValue: any,
@@ -46,12 +54,23 @@ const SignUp: React.FC = () => {
       <Formik
         initialValues={initalValues}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
-            await createUser(values)
-            alert('User created successfully')
-          } catch (error) {
-            alert('Error creating user')
+            const response = await createUser(values)
+            if (response.status === 201) {
+              setMessage({
+                type: 'success',
+                text: 'Usuário criado com sucesso',
+              })
+              resetForm()
+              setTimeout(() => {
+                navigate('/login')
+              }, 2000)
+            } else {
+              setMessage({ type: 'error', text: response.data.error })
+            }
+          } catch (error: any) {
+            setMessage({ type: 'error', text: error.message })
           } finally {
             setSubmitting(false)
           }
@@ -79,6 +98,9 @@ const SignUp: React.FC = () => {
               >
                 Cadastro
               </Typography>
+              {message && (
+                <AlertMessage type={message.type} message={message.text} />
+              )}
               <UserForm />
               <Typography
                 variant="h6"

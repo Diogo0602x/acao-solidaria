@@ -9,9 +9,15 @@ class CreateUserController {
 
     const createUserUseCase = new CreateUserUseCase(userRepository)
 
-    const user = await createUserUseCase.execute(data)
-
-    return response.status(201).json(user)
+    try {
+      const user = await createUserUseCase.execute(data)
+      return response.status(201).json(user)
+    } catch (error) {
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message })
+      }
+      return response.status(500).json({ error: 'Internal server error' })
+    }
   }
 }
 

@@ -9,6 +9,7 @@ import { Home } from '@/pages/Home/Home'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { SignUp } from '@/pages/SignUp/SignUp'
+import { Login } from '@/pages/Login/Login'
 
 const App: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ const MainContent: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </main>
   )

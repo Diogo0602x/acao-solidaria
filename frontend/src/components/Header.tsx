@@ -38,6 +38,8 @@ const Header: React.FC = () => {
             src="/logo-branco.svg"
             alt="Jornada Solidária"
             className="h-16"
+            style={{ cursor: 'pointer' }}
+            onClick={() => navigate('/')}
           />
         </Box>
         <Box display="flex" alignItems="center">
@@ -68,6 +70,7 @@ const Header: React.FC = () => {
                 backgroundColor: 'transparent',
               },
             }}
+            onClick={() => navigate('/login')}
           >
             Login
           </Button>
