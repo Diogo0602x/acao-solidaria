@@ -23,7 +23,11 @@ class UpdateUserUseCase {
       data.password = hashedPassword
     }
 
-    return this.userRepository.update(userId, data)
+    try {
+      return await this.userRepository.update(userId, data)
+    } catch (error) {
+      throw new Error('Could not update user')
+    }
   }
 }
 

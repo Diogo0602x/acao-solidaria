@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import { Formik, Form } from 'formik'
 import { useNavigate } from 'react-router-dom'
-import { createUser, getAddressByCep } from '@/modules/users/SignUp/service'
+import { createUser } from '@/modules/users/SignUp/service'
 import { validationSchema } from '@/modules/users/SignUp/validationSchema'
 import { UserForm } from '@/modules/users/SignUp/components/UserForm'
 import { AddressForm } from '@/modules/users/SignUp/components/AddressForm'
-import { initalValues } from './commons'
+import { initalValues } from '@/modules/users/SignUp/commons'
 import { AlertMessage } from '@/components/AlertMessage'
+import { handleCepChange } from '@/modules/users/commons'
 
 const SignUp: React.FC = () => {
   const [message, setMessage] = useState<{
@@ -16,27 +17,6 @@ const SignUp: React.FC = () => {
   } | null>(null)
   const navigate = useNavigate()
 
-  const handleCepChange = async (
-    cep: string,
-    setFieldValue: any,
-    setFieldError: any,
-  ) => {
-    const { data, status } = await getAddressByCep(cep)
-    if (status === 200) {
-      setFieldValue('address.street', data.street)
-      setFieldValue('address.neighborhood', data.neighborhood)
-      setFieldValue('address.city', data.city)
-      setFieldValue('address.state', data.state)
-      setFieldError('address.zipCode', data.cep)
-    } else {
-      setFieldValue('address.street', '')
-      setFieldValue('address.neighborhood', '')
-      setFieldValue('address.city', '')
-      setFieldValue('address.state', '')
-      throw new Error('Invalid CEP')
-    }
-  }
-
   return (
     <Box
       display="flex"
@@ -44,6 +24,7 @@ const SignUp: React.FC = () => {
       alignItems="center"
       height="100vh"
       style={{
+        backgroundImage: "url('/bg-sign-up.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '2rem',

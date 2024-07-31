@@ -5,9 +5,13 @@ import { MaskedInput } from '@/components/MaskedInput'
 
 interface AddressFormProps {
   handleCepChange: (cep: string) => Promise<void>
+  isDetail?: boolean
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
+const AddressForm: React.FC<AddressFormProps> = ({
+  handleCepChange,
+  isDetail = false,
+}) => {
   const { values, errors, touched } = useFormikContext<any>()
   const [loading, setLoading] = useState(false)
   const [cepErrorMessage, setCepErrorMessage] = useState(false)
@@ -44,6 +48,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
             inputComponent: MaskedInput as any,
             inputProps: { mask: '00000-000' },
             endAdornment: loading ? <CircularProgress size={24} /> : null,
+            disabled: isDetail,
           }}
           onBlur={handleCepBlur}
         />
@@ -125,6 +130,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ handleCepChange }) => {
           getIn(errors, 'address.complement')
         }
         InputLabelProps={{ shrink: !!values.address.complement }}
+        disabled={isDetail}
       />
     </>
   )

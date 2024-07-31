@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from '@mui/material'
 import { styled } from '@mui/system'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { useAuth } from '@/auth/AuthProvider'
 
@@ -18,10 +18,13 @@ const StyledAppBar = styled(AppBar)(() => ({
 }))
 
 const Header: React.FC = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
   const [isScrolled, setIsScrolled] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { isLoggedIn, logout, checkAuth } = useAuth()
-  const navigate = useNavigate()
+  const backgroundTransparent = isHome ? 'transparent' : 'background.default'
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50)
@@ -56,7 +59,9 @@ const Header: React.FC = () => {
       position="fixed"
       color="transparent"
       sx={{
-        backgroundColor: isScrolled ? 'background.default' : 'transparent',
+        backgroundColor: isScrolled
+          ? 'background.default'
+          : backgroundTransparent,
         color: isScrolled ? 'primary.main' : 'primary.light',
       }}
       elevation={isScrolled ? 4 : 0}
@@ -78,7 +83,7 @@ const Header: React.FC = () => {
                 edge="end"
                 color="inherit"
                 onClick={handleMenu}
-                srx={{ color: 'white' }}
+                sx={{ color: 'white' }}
               >
                 <AccountCircleIcon />
               </IconButton>

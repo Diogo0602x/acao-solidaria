@@ -7,17 +7,30 @@ import {
   TextField,
   Box,
   FormHelperText,
+  IconButton,
+  InputAdornment,
 } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useFormikContext, Field, getIn } from 'formik'
 import { UserRole } from '@/enums'
 import { getPrincipalUsers as fetchPrincipalUsers } from '@/modules/users/SignUp/service'
 import { MaskedInput } from '@/components/MaskedInput'
 
-const UserForm: React.FC = () => {
+interface UserFormProps {
+  isDetail?: boolean
+  isEdit?: boolean
+}
+
+const UserForm: React.FC<UserFormProps> = ({
+  isDetail = false,
+  isEdit = false,
+}) => {
   const { values, errors, touched, setFieldValue } = useFormikContext<any>()
   const [principalUsers, setPrincipalUsers] = useState<
     { label: string; value: string }[]
   >([])
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const selectedRole = values.role
 
@@ -42,6 +55,10 @@ const UserForm: React.FC = () => {
     }
   }, [selectedRole, getPrincipalUsers])
 
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show)
+
   return (
     <Box>
       <FormControl
@@ -61,6 +78,7 @@ const UserForm: React.FC = () => {
             setFieldValue('cpf', '')
             setFieldValue('cnpj', '')
           }}
+          disabled={isDetail}
         >
           <MenuItem value={UserRole.CHURCH}>Igreja</MenuItem>
           <MenuItem value={UserRole.SEMINARY}>Seminário</MenuItem>
@@ -92,6 +110,7 @@ const UserForm: React.FC = () => {
             labelId="linkedTo-label"
             label="Qual sua igreja ou seminário?"
             fullWidth
+            disabled={isDetail}
           >
             {principalUsers.map((user) => (
               <MenuItem key={user.value} value={user.value}>
@@ -113,6 +132,7 @@ const UserForm: React.FC = () => {
         margin="normal"
         error={Boolean(getIn(errors, 'name') && getIn(touched, 'name'))}
         helperText={getIn(touched, 'name') && getIn(errors, 'name')}
+        disabled={isDetail}
       />
 
       {[UserRole.PRIEST, UserRole.SEMINARIST, UserRole.PILGRIM].includes(
@@ -127,6 +147,7 @@ const UserForm: React.FC = () => {
           InputProps={{
             inputComponent: MaskedInput as any,
             inputProps: { mask: '000.000.000-00' },
+            disabled: isDetail,
           }}
           error={Boolean(getIn(errors, 'cpf') && getIn(touched, 'cpf'))}
           helperText={getIn(touched, 'cpf') && getIn(errors, 'cpf')}
@@ -143,6 +164,7 @@ const UserForm: React.FC = () => {
           InputProps={{
             inputComponent: MaskedInput as any,
             inputProps: { mask: '00.000.000/0000-00' },
+            disabled: isDetail,
           }}
           error={Boolean(getIn(errors, 'cnpj') && getIn(touched, 'cnpj'))}
           helperText={getIn(touched, 'cnpj') && getIn(errors, 'cnpj')}
@@ -158,33 +180,68 @@ const UserForm: React.FC = () => {
         margin="normal"
         error={Boolean(getIn(errors, 'email') && getIn(touched, 'email'))}
         helperText={getIn(touched, 'email') && getIn(errors, 'email')}
+        disabled={isDetail}
       />
 
-      <Field
-        name="password"
-        as={TextField}
-        label="Senha"
-        type="password"
-        fullWidth
-        margin="normal"
-        error={Boolean(getIn(errors, 'password') && getIn(touched, 'password'))}
-        helperText={getIn(touched, 'password') && getIn(errors, 'password')}
-      />
+      {!isDetail && !isEdit && (
+        <>
+          <Field
+            name="password"
+            as={TextField}
+            label="Senha"
+            type={showPassword ? 'text' : 'password'}
+            fullWidth
+            margin="normal"
+            error={Boolean(
+              getIn(errors, 'password') && getIn(touched, 'password'),
+            )}
+            helperText={getIn(touched, 'password') && getIn(errors, 'password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-      <Field
-        name="confirmPassword"
-        as={TextField}
-        label="Confirma sua senha"
-        type="password"
-        fullWidth
-        margin="normal"
-        error={Boolean(
-          getIn(errors, 'confirmPassword') && getIn(touched, 'confirmPassword'),
-        )}
-        helperText={
-          getIn(touched, 'confirmPassword') && getIn(errors, 'confirmPassword')
-        }
-      />
+          <Field
+            name="confirmPassword"
+            as={TextField}
+            label="Confirma sua senha"
+            type={showConfirmPassword ? 'text' : 'password'}
+            fullWidth
+            margin="normal"
+            error={Boolean(
+              getIn(errors, 'confirmPassword') &&
+                getIn(touched, 'confirmPassword'),
+            )}
+            helperText={
+              getIn(touched, 'confirmPassword') &&
+              getIn(errors, 'confirmPassword')
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle confirm password visibility"
+                    onClick={handleClickShowConfirmPassword}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </>
+      )}
 
       <Field
         name="telephone"
@@ -195,6 +252,7 @@ const UserForm: React.FC = () => {
         InputProps={{
           inputComponent: MaskedInput as any,
           inputProps: { mask: '(00) 00000-0000' },
+          disabled: isDetail,
         }}
         error={Boolean(
           getIn(errors, 'telephone') && getIn(touched, 'telephone'),
@@ -210,7 +268,8 @@ const UserForm: React.FC = () => {
         margin="normal"
         InputProps={{
           inputComponent: MaskedInput as any,
-          inputProps: { mask: '(00) 00000-0000' },
+          inputProps: { mask: '(00) 0000-0000' },
+          disabled: isDetail,
         }}
         error={Boolean(
           getIn(errors, 'cellphone') && getIn(touched, 'cellphone'),

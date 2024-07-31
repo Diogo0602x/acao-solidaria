@@ -60,7 +60,7 @@ describe('UpdateUser', () => {
         password: 'newpassword123',
         confirmPassword: 'differentpassword123',
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toThrow('Passwords do not match')
   })
 
   it('should update the user password', async () => {
@@ -88,5 +88,35 @@ describe('UpdateUser', () => {
     })
 
     expect(updatedUser).toHaveProperty('password')
+  })
+
+  it('should throw an error if update fails', async () => {
+    jest.spyOn(fakeUserRepository, 'update').mockImplementationOnce(() => {
+      throw new Error('Could not update user')
+    })
+
+    const user = await fakeUserRepository.create({
+      name: 'João Silva',
+      email: 'joao.silva@example.com',
+      password: 'senha123',
+      confirmPassword: 'senha123',
+      role: 'priest',
+      cpf: '123.456.789-00',
+      telephone: '(11) 1234-5678',
+      address: {
+        street: 'Rua da Consolação',
+        neighborhood: 'Centro',
+        city: 'São Paulo',
+        state: 'SP',
+        zipCode: '01000-000',
+      },
+      linkedTo: 'principalUserId',
+    })
+
+    await expect(
+      updateUser.execute(user.id, {
+        name: 'João Updated',
+      }),
+    ).rejects.toThrow('Could not update user')
   })
 })
