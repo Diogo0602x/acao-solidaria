@@ -74,7 +74,12 @@ const Header: React.FC = () => {
         <Box display="flex" alignItems="center">
           {isLoggedIn ? (
             <>
-              <IconButton edge="end" color="inherit" onClick={handleMenu}>
+              <IconButton
+                edge="end"
+                color="inherit"
+                onClick={handleMenu}
+                srx={{ color: 'white' }}
+              >
                 <AccountCircleIcon />
               </IconButton>
               <Menu

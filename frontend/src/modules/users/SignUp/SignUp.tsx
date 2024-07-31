@@ -44,7 +44,6 @@ const SignUp: React.FC = () => {
       alignItems="center"
       height="100vh"
       style={{
-        backgroundImage: "url('/bg-sign-up.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '2rem',

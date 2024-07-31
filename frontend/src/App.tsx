@@ -1,6 +1,11 @@
 // App.tsx
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom'
 import { Home } from '@/modules/Home/Home'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
@@ -23,8 +28,13 @@ const App: React.FC = () => {
 }
 
 const MainContent: React.FC = () => {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
   return (
-    <main className="flex-grow bg-background-default">
+    <main
+      className={`flex-grow ${isHome ? 'bg-background-default' : 'bg-white'}`}
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
