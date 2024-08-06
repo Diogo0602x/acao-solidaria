@@ -15,3 +15,12 @@ export const createFundraising = async (data: {
     return { data: null, status: error.response?.status || 500 }
   }
 }
+
+export const fundraisingCreated = async (userId: string) => {
+  try {
+    const response = await API.get(`/fundraising/sales/user/${userId}`)
+    return { data: response.data, status: response.status }
+  } catch (error) {
+    return { data: null, status: error.response?.status || 500 }
+  }
+}

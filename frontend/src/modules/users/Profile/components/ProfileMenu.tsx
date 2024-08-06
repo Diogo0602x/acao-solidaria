@@ -55,7 +55,7 @@ const ProfileMenu: React.FC = () => {
                 to="/profile/fundraisings-created"
                 selected={location.pathname === '/profile/fundraisings-created'}
               >
-                <ListItemText primary="Ações Criadas" />
+                <ListItemText primary="Ações Criadas/Vendidas" />
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
