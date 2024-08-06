@@ -12,7 +12,7 @@ describe('ListFundraisingPurchasesByUser', () => {
     )
   })
 
-  it('should be able to list fundraising purchases by user', async () => {
+  it('should be able to list fundraising purchases by user and group by fundraising', async () => {
     await fakeFundraisingPurchaseRepository.create({
       fundraising: 'fundraisingId1',
       user: 'userId',
@@ -22,11 +22,19 @@ describe('ListFundraisingPurchasesByUser', () => {
     })
 
     await fakeFundraisingPurchaseRepository.create({
-      fundraising: 'fundraisingId2',
+      fundraising: 'fundraisingId1',
       user: 'userId',
       quantity: 2,
       pricePurchased: 20,
       priceSold: 25,
+    })
+
+    await fakeFundraisingPurchaseRepository.create({
+      fundraising: 'fundraisingId2',
+      user: 'userId',
+      quantity: 3,
+      pricePurchased: 30,
+      priceSold: 35,
     })
 
     const purchases = await listFundraisingPurchasesByUser.execute('userId')
@@ -35,16 +43,16 @@ describe('ListFundraisingPurchasesByUser', () => {
       expect.objectContaining({
         fundraising: 'fundraisingId1',
         user: 'userId',
-        quantity: 1,
-        pricePurchased: 10,
-        priceSold: 15,
+        quantity: 3,
+        pricePurchased: 30,
+        priceSold: 40,
       }),
       expect.objectContaining({
         fundraising: 'fundraisingId2',
         user: 'userId',
-        quantity: 2,
-        pricePurchased: 20,
-        priceSold: 25,
+        quantity: 3,
+        pricePurchased: 30,
+        priceSold: 35,
       }),
     ])
   })

@@ -82,7 +82,7 @@ const FundraisingsCreated: React.FC = () => {
                   variant="outlined"
                   sx={{ display: 'flex', padding: 2, alignItems: 'center' }}
                 >
-                  <StoreIcon color="primary" sx={{ marginRight: 1 }} />
+                  <StoreIcon color="action" sx={{ marginRight: 1 }} />
                   <Box>
                     <Typography variant="body2">Quantidade Total</Typography>
                     <Typography variant="body1">
@@ -107,7 +107,7 @@ const FundraisingsCreated: React.FC = () => {
                   variant="outlined"
                   sx={{ display: 'flex', padding: 2, alignItems: 'center' }}
                 >
-                  <AttachMoneyIcon color="primary" sx={{ marginRight: 1 }} />
+                  <AttachMoneyIcon color="warning" sx={{ marginRight: 1 }} />
                   <Box>
                     <Typography variant="body2">Preço</Typography>
                     <Typography variant="body1">

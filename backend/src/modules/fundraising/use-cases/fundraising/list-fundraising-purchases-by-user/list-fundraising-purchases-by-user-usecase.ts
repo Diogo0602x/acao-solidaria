@@ -9,7 +9,24 @@ class ListFundraisingPurchasesByUserUseCase {
   public async execute(userId: string): Promise<FundraisingPurchase[]> {
     const purchases =
       await this.fundraisingPurchaseRepository.findByUserId(userId)
-    return purchases
+
+    const groupedPurchases = purchases.reduce(
+      (acc: FundraisingPurchase[], purchase: FundraisingPurchase) => {
+        const existing = acc.find(
+          (item) =>
+            item.fundraising.toString() === purchase.fundraising.toString(),
+        )
+        if (existing) {
+          existing.quantity += purchase.quantity
+        } else {
+          acc.push(purchase)
+        }
+        return acc
+      },
+      [],
+    )
+
+    return groupedPurchases
   }
 }
 

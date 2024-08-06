@@ -15,7 +15,7 @@ const Home: React.FC = () => {
       }}
     >
       <Typography variant="h3" color="text.primary">
-        Bem Vindo a Jornada Solidária
+        Bem Vindo a Ação Solidária
       </Typography>
     </Box>
   )
