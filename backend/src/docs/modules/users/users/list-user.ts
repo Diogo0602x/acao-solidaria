@@ -1,10 +1,10 @@
 const listUser = {
   tags: ['Users'],
-  description: 'List all users (Priests, Seminarists, and Pilgrims)',
+  description: 'List all users',
   operationId: 'listUser',
   responses: {
     '200': {
-      description: 'List of users retrieved successfully',
+      description: 'List of users',
       content: {
         'application/json': {
           schema: {

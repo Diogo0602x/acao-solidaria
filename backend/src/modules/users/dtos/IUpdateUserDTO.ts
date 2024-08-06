@@ -4,6 +4,7 @@ interface IUpdateUserDTO {
   password?: string
   confirmPassword?: string
   cpf?: string
+  cnpj?: string
   telephone?: string
   cellphone?: string
   address?: Partial<{

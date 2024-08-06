@@ -4,14 +4,16 @@ import {
   UpdateFundraisingController,
   ListFundraisingController,
   ListFundraisingByIdController,
-  ListFundraisingByUserController,
-  ListFundraisingPurchasesByUserController,
   DeleteFundraisingController,
+  PurchaseFundraisingController,
+  ListFundraisingPurchasesByUserController,
+  ListFundraisingSalesByUserController,
 } from '@fundraising/use-cases'
 
 const fundraisingRouter = Router()
 
 fundraisingRouter.post('/', new CreateFundraisingController().handle)
+fundraisingRouter.put('/purchase', new PurchaseFundraisingController().handle)
 fundraisingRouter.put(
   '/:fundraisingId',
   new UpdateFundraisingController().handle,
@@ -21,17 +23,17 @@ fundraisingRouter.get(
   '/:fundraisingId',
   new ListFundraisingByIdController().handle,
 )
+fundraisingRouter.delete(
+  '/:fundraisingId',
+  new DeleteFundraisingController().handle,
+)
 fundraisingRouter.get(
-  '/user/:userId',
-  new ListFundraisingByUserController().handle,
+  '/sales/user/:userId',
+  new ListFundraisingSalesByUserController().handle,
 )
 fundraisingRouter.get(
   '/purchases/user/:userId',
   new ListFundraisingPurchasesByUserController().handle,
-)
-fundraisingRouter.delete(
-  '/:fundraisingId',
-  new DeleteFundraisingController().handle,
 )
 
 export { fundraisingRouter }

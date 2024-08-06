@@ -1,15 +1,8 @@
-import { UsersRoutes, PrincipalUserRoutes } from '@docs/modules/users'
-import { FundraisingRoutes } from '@docs/modules/fundraising'
+import { UsersRoutes, AddressRoutes, FundraisingRoutes } from '@docs/modules'
 
 const routes = {
-  '/principal-users': {
-    post: PrincipalUserRoutes.createPrincipalUser,
-    get: PrincipalUserRoutes.listPrincipalUser,
-  },
-  '/principal-users/{principalUserId}': {
-    get: PrincipalUserRoutes.listPrincipalUserById,
-    put: PrincipalUserRoutes.updatePrincipalUser,
-    delete: PrincipalUserRoutes.deletePrincipalUser,
+  '/address/{cep}': {
+    get: AddressRoutes.getAddressByCep,
   },
   '/users': {
     post: UsersRoutes.createUser,
@@ -20,6 +13,12 @@ const routes = {
     put: UsersRoutes.updateUser,
     delete: UsersRoutes.deleteUser,
   },
+  '/users/principal-users/combo-select': {
+    get: UsersRoutes.comboSelectPrincipalUsers,
+  },
+  '/users/login': {
+    get: UsersRoutes.authenticateUser,
+  },
   '/fundraising': {
     post: FundraisingRoutes.createFundraising,
     get: FundraisingRoutes.listFundraising,
@@ -29,8 +28,14 @@ const routes = {
     put: FundraisingRoutes.updateFundraising,
     delete: FundraisingRoutes.deleteFundraising,
   },
-  '/fundraising/user/{userId}': {
-    get: FundraisingRoutes.listFundraisingByUser,
+  '/fundraising/purchase': {
+    put: FundraisingRoutes.purchaseFundraising,
+  },
+  '/fundraising/purchases/user/{userId}': {
+    get: FundraisingRoutes.listFundraisingPurchasesByUser,
+  },
+  '/fundraising/sales/user/{userId}': {
+    get: FundraisingRoutes.listFundraisingSalesByUser,
   },
 }
 export { routes }

@@ -1,22 +1,33 @@
-import { IUpdateUserDTO } from '@modules/users/dtos/IUpdateUserDTO'
-import { IUserRepository } from '@modules/users/repositories/IUserRepository'
+import { hash } from 'bcryptjs'
 import { User } from '@modules/users/infra/mongoose/schemas/User'
-import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO'
+import { IUserRepository } from '@modules/users/repositories/IUserRepository'
+import { IUpdateUserDTO } from '@modules/users/dtos/IUpdateUserDTO'
 
 class UpdateUserUseCase {
   constructor(private userRepository: IUserRepository) {}
 
-  public async execute(id: string, data: IUpdateUserDTO): Promise<User | null> {
-    let user = await this.userRepository.findById(id)
-
-    if (!user) {
-      return null
+  public async execute(
+    userId: string,
+    data: IUpdateUserDTO,
+  ): Promise<User | null> {
+    if (
+      data.password &&
+      data.confirmPassword &&
+      data.password !== data.confirmPassword
+    ) {
+      throw new Error('Passwords do not match')
     }
 
-    user = Object.assign(user, data)
-    await this.userRepository.update(id, data as Partial<ICreateUserDTO>)
+    if (data.password) {
+      const hashedPassword = await hash(data.password, 8)
+      data.password = hashedPassword
+    }
 
-    return user
+    try {
+      return await this.userRepository.update(userId, data)
+    } catch (error) {
+      throw new Error('Could not update user')
+    }
   }
 }
 

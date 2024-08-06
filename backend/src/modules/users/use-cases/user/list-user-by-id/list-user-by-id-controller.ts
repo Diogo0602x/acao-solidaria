@@ -8,13 +8,10 @@ class ListUserByIdController {
     const userRepository = new UserRepository()
 
     const listUserByIdUseCase = new ListUserByIdUseCase(userRepository)
+
     const user = await listUserByIdUseCase.execute(userId)
 
-    if (!user) {
-      return response.status(404).json({ error: 'User not found' })
-    }
-
-    return response.json(user)
+    return response.status(200).json(user)
   }
 }
 

@@ -1,5 +1,5 @@
-import { Fundraising } from '@modules/fundraising/infra/mongoose/schemas/Fundraising'
 import { IFundraisingRepository } from '@modules/fundraising/repositories/IFundraisingRepository'
+import { Fundraising } from '@modules/fundraising/infra/mongoose/schemas/Fundraising'
 
 class ListFundraisingUseCase {
   constructor(private fundraisingRepository: IFundraisingRepository) {}

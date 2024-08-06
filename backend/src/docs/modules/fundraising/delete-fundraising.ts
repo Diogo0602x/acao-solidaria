@@ -1,16 +1,16 @@
 const deleteFundraising = {
   tags: ['Fundraising'],
-  description: 'Delete a fundraising campaign by ID',
+  description: 'Delete a fundraising campaign',
   operationId: 'deleteFundraising',
   parameters: [
     {
-      name: 'fundraisingId',
+      name: 'id',
       in: 'path',
       required: true,
       schema: {
         type: 'string',
       },
-      description: 'Fundraising ID',
+      description: 'The ID of the fundraising campaign to delete',
     },
   ],
   responses: {
@@ -18,7 +18,7 @@ const deleteFundraising = {
       description: 'Fundraising campaign deleted successfully',
     },
     '404': {
-      description: 'Fundraising not found',
+      description: 'Fundraising campaign not found',
       content: {
         'application/json': {
           schema: {

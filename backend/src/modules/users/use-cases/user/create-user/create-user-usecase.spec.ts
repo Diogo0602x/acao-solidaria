@@ -51,6 +51,68 @@ describe('CreateUser', () => {
         },
         linkedTo: 'principalUserId',
       }),
-    ).rejects.toThrowError('Passwords do not match')
+    ).rejects.toThrow('Passwords do not match')
+  })
+
+  it('should throw an error if CNPJ is not provided for principal users', async () => {
+    await expect(
+      createUser.execute({
+        name: 'João Silva',
+        email: 'joao.silva@example.com',
+        password: 'senha123',
+        confirmPassword: 'senha123',
+        role: 'church',
+        telephone: '(11) 1234-5678',
+        address: {
+          street: 'Rua da Consolação',
+          neighborhood: 'Centro',
+          city: 'São Paulo',
+          state: 'SP',
+          zipCode: '01000-000',
+        },
+      }),
+    ).rejects.toThrow('CNPJ is required for principal users')
+  })
+
+  it('should throw an error if LinkedTo is not provided for regular users', async () => {
+    await expect(
+      createUser.execute({
+        name: 'João Silva',
+        email: 'joao.silva@example.com',
+        password: 'senha123',
+        confirmPassword: 'senha123',
+        role: 'priest',
+        cpf: '123.456.789-00',
+        telephone: '(11) 1234-5678',
+        address: {
+          street: 'Rua da Consolação',
+          neighborhood: 'Centro',
+          city: 'São Paulo',
+          state: 'SP',
+          zipCode: '01000-000',
+        },
+      }),
+    ).rejects.toThrow('LinkedTo is required for regular users')
+  })
+
+  it('should throw an error if CPF is not provided for regular users', async () => {
+    await expect(
+      createUser.execute({
+        name: 'João Silva',
+        email: 'joao.silva@example.com',
+        password: 'senha123',
+        confirmPassword: 'senha123',
+        role: 'priest',
+        linkedTo: 'principalUserId',
+        telephone: '(11) 1234-5678',
+        address: {
+          street: 'Rua da Consolação',
+          neighborhood: 'Centro',
+          city: 'São Paulo',
+          state: 'SP',
+          zipCode: '01000-000',
+        },
+      }),
+    ).rejects.toThrow('CPF is required for regular users')
   })
 })

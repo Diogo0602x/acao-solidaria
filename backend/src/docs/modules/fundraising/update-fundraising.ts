@@ -1,18 +1,7 @@
 const updateFundraising = {
   tags: ['Fundraising'],
-  description: 'Update a fundraising campaign',
+  description: 'Update an existing fundraising campaign',
   operationId: 'updateFundraising',
-  parameters: [
-    {
-      name: 'fundraisingId',
-      in: 'path',
-      required: true,
-      schema: {
-        type: 'string',
-      },
-      description: 'Fundraising ID',
-    },
-  ],
   requestBody: {
     content: {
       'application/json': {
@@ -20,14 +9,18 @@ const updateFundraising = {
           type: 'object',
           properties: {
             name: { type: 'string' },
+            quantity: { type: 'number' },
             quantityAvailable: { type: 'number' },
+            price: { type: 'number' },
             imageUrl: { type: 'string' },
           },
         },
         example: {
           name: 'Calendário Atualizado',
-          quantityAvailable: 900,
-          imageUrl: 'http://example.com/imagem.jpg',
+          quantity: 1200,
+          quantityAvailable: 800,
+          price: 12,
+          imageUrl: 'http://example.com/imagem_atualizada.jpg',
         },
       },
     },
@@ -42,8 +35,10 @@ const updateFundraising = {
             properties: {
               id: { type: 'string' },
               name: { type: 'string' },
+              quantity: { type: 'number' },
               quantityAvailable: { type: 'number' },
               quantitySold: { type: 'number' },
+              price: { type: 'number' },
               imageUrl: { type: 'string' },
               user: { type: 'string' },
               pixKeyCpf: { type: 'string' },
@@ -53,9 +48,11 @@ const updateFundraising = {
           example: {
             id: 'fundraising_id',
             name: 'Calendário Atualizado',
-            quantityAvailable: 900,
-            quantitySold: 100,
-            imageUrl: 'http://example.com/imagem.jpg',
+            quantity: 1200,
+            quantityAvailable: 800,
+            quantitySold: 400,
+            price: 12,
+            imageUrl: 'http://example.com/imagem_atualizada.jpg',
             user: 'user_id',
             pixKeyCpf: '123.456.789-00',
             pixKeyCnpj: '12.345.678/0001-99',
@@ -80,7 +77,7 @@ const updateFundraising = {
       },
     },
     '404': {
-      description: 'Fundraising not found',
+      description: 'Fundraising campaign not found',
       content: {
         'application/json': {
           schema: {

@@ -1,20 +1,17 @@
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { UpdateUserUseCase } from '@modules/users/use-cases/user/update-user/update-user-usecase'
-import { CreateUserUseCase } from '@modules/users/use-cases/user/create-user/create-user-usecase'
 
 let fakeUserRepository: FakeUserRepository
 let updateUser: UpdateUserUseCase
-let createUser: CreateUserUseCase
 
 describe('UpdateUser', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     updateUser = new UpdateUserUseCase(fakeUserRepository)
-    createUser = new CreateUserUseCase(fakeUserRepository)
   })
 
   it('should be able to update a user', async () => {
-    const user = await createUser.execute({
+    const user = await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
       password: 'senha123',
@@ -33,17 +30,93 @@ describe('UpdateUser', () => {
     })
 
     const updatedUser = await updateUser.execute(user.id, {
-      name: 'João Pedro Silva',
+      name: 'João Updated',
     })
 
-    expect(updatedUser?.name).toBe('João Pedro Silva')
+    expect(updatedUser).toHaveProperty('name', 'João Updated')
   })
 
-  it('should return null if user not found', async () => {
-    const result = await updateUser.execute('non-existing-id', {
-      name: 'João Pedro Silva',
+  it('should not update the user if passwords do not match', async () => {
+    const user = await fakeUserRepository.create({
+      name: 'João Silva',
+      email: 'joao.silva@example.com',
+      password: 'senha123',
+      confirmPassword: 'senha123',
+      role: 'priest',
+      cpf: '123.456.789-00',
+      telephone: '(11) 1234-5678',
+      address: {
+        street: 'Rua da Consolação',
+        neighborhood: 'Centro',
+        city: 'São Paulo',
+        state: 'SP',
+        zipCode: '01000-000',
+      },
+      linkedTo: 'principalUserId',
     })
 
-    expect(result).toBeNull()
+    await expect(
+      updateUser.execute(user.id, {
+        password: 'newpassword123',
+        confirmPassword: 'differentpassword123',
+      }),
+    ).rejects.toThrow('Passwords do not match')
+  })
+
+  it('should update the user password', async () => {
+    const user = await fakeUserRepository.create({
+      name: 'João Silva',
+      email: 'joao.silva@example.com',
+      password: 'senha123',
+      confirmPassword: 'senha123',
+      role: 'priest',
+      cpf: '123.456.789-00',
+      telephone: '(11) 1234-5678',
+      address: {
+        street: 'Rua da Consolação',
+        neighborhood: 'Centro',
+        city: 'São Paulo',
+        state: 'SP',
+        zipCode: '01000-000',
+      },
+      linkedTo: 'principalUserId',
+    })
+
+    const updatedUser = await updateUser.execute(user.id, {
+      password: 'newpassword123',
+      confirmPassword: 'newpassword123',
+    })
+
+    expect(updatedUser).toHaveProperty('password')
+  })
+
+  it('should throw an error if update fails', async () => {
+    jest.spyOn(fakeUserRepository, 'update').mockImplementationOnce(() => {
+      throw new Error('Could not update user')
+    })
+
+    const user = await fakeUserRepository.create({
+      name: 'João Silva',
+      email: 'joao.silva@example.com',
+      password: 'senha123',
+      confirmPassword: 'senha123',
+      role: 'priest',
+      cpf: '123.456.789-00',
+      telephone: '(11) 1234-5678',
+      address: {
+        street: 'Rua da Consolação',
+        neighborhood: 'Centro',
+        city: 'São Paulo',
+        state: 'SP',
+        zipCode: '01000-000',
+      },
+      linkedTo: 'principalUserId',
+    })
+
+    await expect(
+      updateUser.execute(user.id, {
+        name: 'João Updated',
+      }),
+    ).rejects.toThrow('Could not update user')
   })
 })

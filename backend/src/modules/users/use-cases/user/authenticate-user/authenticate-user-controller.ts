@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { AuthenticateUserUseCase } from './authenticate-user-usecase'
+import { AuthenticateUserUseCase } from '@users/use-cases'
 import { UserRepository } from '@modules/users/infra/mongoose/repositories/UserRepository'
 
 class AuthenticateUserController {
@@ -9,12 +9,19 @@ class AuthenticateUserController {
 
     const authenticateUserUseCase = new AuthenticateUserUseCase(userRepository)
 
-    const { user, token } = await authenticateUserUseCase.execute({
-      identifier,
-      password,
-    })
+    try {
+      const { user, token } = await authenticateUserUseCase.execute({
+        identifier,
+        password,
+      })
 
-    return response.status(200).json({ user, token })
+      return response.status(200).json({ user, token })
+    } catch (error) {
+      if (error instanceof Error) {
+        return response.status(400).json({ error: error.message })
+      }
+      return response.status(500).json({ error: 'Internal server error' })
+    }
   }
 }
 

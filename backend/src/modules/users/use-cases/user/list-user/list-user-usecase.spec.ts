@@ -1,20 +1,17 @@
 import { FakeUserRepository } from '@modules/users/repositories/fakes/fake-user-repository'
 import { ListUserUseCase } from '@modules/users/use-cases/user/list-user/list-user-usecase'
-import { CreateUserUseCase } from '@modules/users/use-cases/user/create-user/create-user-usecase'
 
 let fakeUserRepository: FakeUserRepository
 let listUser: ListUserUseCase
-let createUser: CreateUserUseCase
 
 describe('ListUser', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     listUser = new ListUserUseCase(fakeUserRepository)
-    createUser = new CreateUserUseCase(fakeUserRepository)
   })
 
   it('should be able to list all users', async () => {
-    await createUser.execute({
+    await fakeUserRepository.create({
       name: 'João Silva',
       email: 'joao.silva@example.com',
       password: 'senha123',
@@ -34,6 +31,12 @@ describe('ListUser', () => {
 
     const users = await listUser.execute()
 
-    expect(users).toHaveLength(1)
+    expect(users).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          email: 'joao.silva@example.com',
+        }),
+      ]),
+    )
   })
 })
