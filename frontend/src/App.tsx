@@ -12,6 +12,10 @@ import { SignUp } from '@/modules/users/SignUp/SignUp'
 import { Login } from '@/modules/users/Login/Login'
 import { Profile } from '@/modules/users/Profile/Profile'
 import { AuthProvider } from '@/auth/AuthProvider'
+import { CreateFundraising } from '@/modules/fundraising/create-fundraising/CreateFundraising'
+import { FundraisingsCreated } from '@/modules/fundraising/fundraisings-created/FundraisingsCreated'
+import { FundraisingsBought } from '@/modules/fundraising/fundraisings-bought/FundraisingsBought'
+import { ProfileLayout } from '@/modules/users/Profile/components/ProfileLayout'
 
 const App: React.FC = () => {
   return (
@@ -39,16 +43,14 @@ const MainContent: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile/*" element={<Profile />}>
-          <Route path="" element={<div>Profile Content</div>} />
+        <Route path="/profile/*" element={<ProfileLayout />}>
+          <Route index element={<Profile />} />
           <Route
             path="fundraisings-created"
-            element={<div>Fundraisings Created Content</div>}
+            element={<FundraisingsCreated />}
           />
-          <Route
-            path="fundraisings-bought"
-            element={<div>Fundraisings Bought Content</div>}
-          />
+          <Route path="fundraisings-bought" element={<FundraisingsBought />} />
+          <Route path="create-fundraising" element={<CreateFundraising />} />
         </Route>
       </Routes>
     </main>

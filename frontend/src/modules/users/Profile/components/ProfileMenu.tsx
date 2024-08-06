@@ -67,6 +67,15 @@ const ProfileMenu: React.FC = () => {
                 <ListItemText primary="Ações Compradas" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                component={Link}
+                to="/profile/create-fundraising"
+                selected={location.pathname === '/profile/create-fundraising'}
+              >
+                <ListItemText primary="Criar Ação" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

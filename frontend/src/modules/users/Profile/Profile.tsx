@@ -8,7 +8,6 @@ import { validationSchemaEdit } from '@/modules/users/Profile/validationSchemaEd
 import { AlertMessage } from '@/components/AlertMessage'
 import { handleCepChange } from '@/modules/users/commons'
 import { useAuth } from '@/auth/AuthProvider'
-import { ProfileMenu } from '@/modules/users/Profile/components/ProfileMenu'
 import { Loading } from '@/components/Loading'
 
 const Profile: React.FC = () => {
@@ -35,100 +34,79 @@ const Profile: React.FC = () => {
   if (!user && isLoading) return <Loading />
 
   return (
-    <Box
-      display="flex"
-      height="100vh"
-      style={{
-        backgroundImage: "url('/bg-sign-up.jpg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '2rem',
-        paddingTop: '5rem',
+    <Formik
+      initialValues={user}
+      validationSchema={validationSchemaEdit}
+      onSubmit={(values) => {
+        const { ...restValues } = values
+        handleUpdateProfile(restValues)
       }}
+      context={{ isEdit: editMode }}
     >
-      <ProfileMenu />
-
-      <Box
-        flexGrow={1}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Formik
-          initialValues={user}
-          validationSchema={validationSchemaEdit}
-          onSubmit={(values) => {
-            const { ...restValues } = values
-            handleUpdateProfile(restValues)
-          }}
-          context={{ isEdit: editMode }}
-        >
-          {({ setFieldValue, setFieldError }) => (
-            <Form>
-              <Box
-                sx={{
-                  backgroundColor: 'background.paper',
-                  padding: 4,
-                  borderRadius: 2,
-                  boxShadow: 3,
-                  maxWidth: 600,
-                  width: '100%',
-                  overflowY: 'auto',
-                  maxHeight: '90vh',
-                }}
+      {({ setFieldValue, setFieldError }) => (
+        <Form>
+          <Box
+            sx={{
+              backgroundColor: 'background.paper',
+              padding: 4,
+              borderRadius: 2,
+              boxShadow: 3,
+              maxWidth: 600,
+              width: '100%',
+              overflowY: 'auto',
+              maxHeight: '90vh',
+            }}
+          >
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ textAlign: 'center', fontWeight: 'medium' }}
+            >
+              {editMode ? 'Editar Perfil' : 'Perfil'}
+            </Typography>
+            {message && (
+              <AlertMessage type={message.type} message={message.text} />
+            )}
+            <UserForm isDetail={!editMode} isEdit={editMode} />
+            <Typography
+              variant="h6"
+              component="h2"
+              gutterBottom
+              sx={{ textAlign: 'center', fontWeight: 'medium' }}
+            >
+              Endereço
+            </Typography>
+            <AddressForm
+              handleCepChange={(cep: string) =>
+                handleCepChange(cep, setFieldValue, setFieldError)
+              }
+              isDetail={!editMode}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setEditMode(!editMode)}
               >
-                <Typography
-                  variant="h4"
-                  component="h1"
-                  gutterBottom
-                  sx={{ textAlign: 'center', fontWeight: 'medium' }}
-                >
-                  {editMode ? 'Editar Perfil' : 'Perfil'}
-                </Typography>
-                {message && (
-                  <AlertMessage type={message.type} message={message.text} />
-                )}
-                <UserForm isDetail={!editMode} isEdit={editMode} />
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  gutterBottom
-                  sx={{ textAlign: 'center', fontWeight: 'medium' }}
-                >
-                  Endereço
-                </Typography>
-                <AddressForm
-                  handleCepChange={(cep: string) =>
-                    handleCepChange(cep, setFieldValue, setFieldError)
-                  }
-                  isDetail={!editMode}
-                />
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    marginTop: 2,
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setEditMode(!editMode)}
-                  >
-                    {editMode ? 'Cancelar' : 'Editar'}
-                  </Button>
-                  {editMode && (
-                    <Button type="submit" variant="contained" color="secondary">
-                      Salvar
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-            </Form>
-          )}
-        </Formik>
-      </Box>
-    </Box>
+                {editMode ? 'Cancelar' : 'Editar'}
+              </Button>
+              {editMode && (
+                <Button type="submit" variant="contained" color="secondary">
+                  Salvar
+                </Button>
+              )}
+            </Box>
+          </Box>
+        </Form>
+      )}
+    </Formik>
   )
 }
 
