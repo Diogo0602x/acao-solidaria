@@ -15,6 +15,7 @@ import { AuthProvider } from '@/auth/AuthProvider'
 import { CreateFundraising } from '@/modules/fundraising/create-fundraising/CreateFundraising'
 import { FundraisingsCreated } from '@/modules/fundraising/fundraisings-created/FundraisingsCreated'
 import { FundraisingsBought } from '@/modules/fundraising/fundraisings-bought/FundraisingsBought'
+import { AllFundraisings } from '@/modules/fundraising/all-fundraisings/AllFundraisings'
 import { ProfileLayout } from '@/modules/users/Profile/components/ProfileLayout'
 
 const App: React.FC = () => {
@@ -52,6 +53,7 @@ const MainContent: React.FC = () => {
           <Route path="fundraisings-bought" element={<FundraisingsBought />} />
           <Route path="create-fundraising" element={<CreateFundraising />} />
         </Route>
+        <Route path="/fundraisings" element={<AllFundraisings />} />{' '}
       </Routes>
     </main>
   )

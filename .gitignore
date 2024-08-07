@@ -48,3 +48,7 @@ pnpm-lock.yaml
 # Ignorar arquivos de test coverage
 coverage/
 .nyc_output/
+
+# Ignorar certificados 
+
+*.p12

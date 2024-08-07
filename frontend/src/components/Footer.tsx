@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
             sx={{ flexGrow: 1 }}
             color="text.primary"
           >
-            &copy; {new Date().getFullYear()} Jornada Solidária
+            &copy; {new Date().getFullYear()} Ação Solidária
           </Typography>
           <Box mx={1}>
             <a

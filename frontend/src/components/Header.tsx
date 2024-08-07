@@ -70,7 +70,7 @@ const Header: React.FC = () => {
         <Box display="flex" flexGrow={1}>
           <img
             src="/logo-branco.svg"
-            alt="Jornada Solidária"
+            alt="Ação Solidária"
             className="h-16"
             style={{ cursor: 'pointer' }}
             onClick={() => navigate('/')}

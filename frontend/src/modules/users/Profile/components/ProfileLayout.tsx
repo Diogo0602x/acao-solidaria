@@ -9,7 +9,7 @@ const ProfileLayout: React.FC = () => {
       display="flex"
       height="100vh"
       style={{
-        backgroundImage: "url('/bg-sign-up.jpg')",
+        backgroundImage: "url('/bg-profile.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '2rem',
