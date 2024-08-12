@@ -1,4 +1,9 @@
-import { UsersRoutes, AddressRoutes, FundraisingRoutes } from '@docs/modules'
+import {
+  UsersRoutes,
+  AddressRoutes,
+  FundraisingRoutes,
+  EfiRoutes,
+} from '@docs/modules'
 
 const routes = {
   '/address/{cep}': {
@@ -36,6 +41,12 @@ const routes = {
   },
   '/fundraising/sales/user/{userId}': {
     get: FundraisingRoutes.listFundraisingSalesByUser,
+  },
+  '/efi': {
+    post: EfiRoutes.authenticateToken,
+  },
+  '/efi/create-immediate-charge': {
+    post: EfiRoutes.createImmediateCharge,
   },
 }
 export { routes }

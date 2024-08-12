@@ -14,6 +14,7 @@
       "@shared/*": ["shared/*"],
       "@users/*": ["modules/users/*"],
       "@fundraising/*": ["modules/fundraising/*"],
+      "@efi/*": ["modules/efi/*"],
       "@docs/*": ["docs/*"]
     },
     "esModuleInterop": true,
