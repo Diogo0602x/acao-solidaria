@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { API } from '@/api'
+import { GeneratePurchaseFundraisingData } from '@/modules/fundraising/types'
 
 export const createFundraising = async (data: {
   name: string
@@ -51,6 +52,20 @@ export const purchaseFundraising = async (data: {
 }) => {
   try {
     const response = await API.post('/fundraising/purchase', data)
+    return { data: response.data, status: response.status }
+  } catch (error) {
+    return { data: null, status: error.response?.status || 500 }
+  }
+}
+
+export const generatePurchaseFundraising = async (
+  data: GeneratePurchaseFundraisingData,
+) => {
+  data.devedor.cpf = data.devedor.cpf.replace(/\D/g, '')
+  data.valor.original = parseFloat(data.valor.original).toFixed(2)
+
+  try {
+    const response = await API.post('/efi/create-immediate-charge', data)
     return { data: response.data, status: response.status }
   } catch (error) {
     return { data: null, status: error.response?.status || 500 }

@@ -14,7 +14,10 @@ import {
   TextField,
 } from '@mui/material'
 import { useAuth } from '@/auth/AuthProvider'
-import { getAllFundraisings, purchaseFundraising } from '../service'
+import {
+  generatePurchaseFundraising,
+  getAllFundraisings,
+} from '@/modules/fundraising/service'
 import { formatCurrency, formatNumber } from '@/commons'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
@@ -23,6 +26,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
+import { Fundraising } from '@/modules/fundraising/types'
+import { PaymentModal } from '@/modules/fundraising/all-fundraisings/PaymentModal'
+import { removeFormatCpfCnpj } from '@/modules/fundraising/commons'
 
 const responsive = {
   superLargeDesktop: {
@@ -45,10 +51,13 @@ const responsive = {
 
 const AllFundraisings: React.FC = () => {
   const { user } = useAuth()
-  const [fundraisings, setFundraisings] = useState<any[]>([])
+  const [fundraisings, setFundraisings] = useState<Fundraising[]>([])
   const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
-  const [step, setStep] = useState(1)
+  const [amount, setAmount] = useState(1)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
+  const [pixCopiaECola, setPixCopiaECola] = useState('')
 
   useEffect(() => {
     const fetchFundraisings = async () => {
@@ -66,15 +75,36 @@ const AllFundraisings: React.FC = () => {
   }, [])
 
   const handlePurchase = async (fundraising: any) => {
+    const totalPrice = (fundraising.price * quantity).toFixed(2)
+    const chavePix = removeFormatCpfCnpj(
+      fundraisings[0].pixKeyCnpj || fundraisings[0].pixKeyCpf,
+    )
+
     if (fundraising && user) {
       const data = {
-        fundraisingId: fundraising._id,
-        userId: user._id,
-        quantity,
+        calendario: {
+          expiracao: 3600,
+        },
+        devedor: {
+          cpf: user.cpf,
+          nome: user.name,
+        },
+        valor: {
+          original: totalPrice,
+        },
+        chave: chavePix,
       }
+
       try {
-        await purchaseFundraising(data)
-        alert('Compra realizada com sucesso!')
+        const response = await generatePurchaseFundraising(data)
+
+        if (response.status === 200 && response.data) {
+          setQrCodeUrl(response.data.pixCopiaECola)
+          setPixCopiaECola(response.data.pixCopiaECola)
+          setModalOpen(true)
+        } else {
+          alert('Erro ao gerar a cobrança. Tente novamente.')
+        }
       } catch (error) {
         console.error('Erro ao realizar a compra:', error)
         alert('Erro ao realizar a compra. Tente novamente.')
@@ -208,7 +238,7 @@ const AllFundraisings: React.FC = () => {
                   gap={2}
                 >
                   <IconButton
-                    onClick={() => setQuantity(Math.max(1, quantity - step))}
+                    onClick={() => setQuantity(Math.max(1, quantity - amount))}
                   >
                     <RemoveIcon />
                   </IconButton>
@@ -221,13 +251,13 @@ const AllFundraisings: React.FC = () => {
                     inputProps={{ min: 1, style: { textAlign: 'center' } }}
                     sx={{ width: 60 }}
                   />
-                  <IconButton onClick={() => setQuantity(quantity + step)}>
+                  <IconButton onClick={() => setQuantity(quantity + amount)}>
                     <AddIcon />
                   </IconButton>
                   <Select
-                    value={step}
+                    value={amount}
                     onChange={(e) =>
-                      setStep(parseInt(e.target.value as string, 10))
+                      setAmount(parseInt(e.target.value as string, 10))
                     }
                     sx={{ marginLeft: 2 }}
                   >
@@ -250,6 +280,13 @@ const AllFundraisings: React.FC = () => {
           </Box>
         ))}
       </Carousel>
+
+      <PaymentModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        pixCopiaECola={pixCopiaECola}
+        qrCodeUrl={qrCodeUrl}
+      />
     </Box>
   )
 }

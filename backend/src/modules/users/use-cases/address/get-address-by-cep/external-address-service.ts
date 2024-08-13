@@ -11,9 +11,7 @@ interface IAddress {
 
 class ExternalAddressService {
   public async getAddressByCep(cep: string): Promise<IAddress> {
-    console.log(`Calling external API with CEP: ${cep}`)
     const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-    console.log(`External API response: ${JSON.stringify(response.data)}`)
 
     if (response.data.erro) {
       throw new Error('Invalid CEP')
