@@ -3,7 +3,7 @@ import { UsersRepository } from '@users/repositories/users.repository'
 import { LoginDto } from '@auth/dtos/login.dto'
 import { compare } from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt'
-import { User } from '@modules/users/entities/user.entity'
+import { User } from '@users/entities/user.entity'
 
 @Injectable()
 export class LoginService {

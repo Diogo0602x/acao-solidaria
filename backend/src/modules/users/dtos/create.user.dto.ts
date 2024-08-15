@@ -9,10 +9,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-
-export interface Roles {
-  role: 'church' | 'seminary' | 'priest' | 'seminarist' | 'pilgrim'
-}
+import { Roles } from '@users/types'
 
 @ValidatorConstraint({ name: 'RoleValidation', async: false })
 export class RoleValidation implements ValidatorConstraintInterface {
