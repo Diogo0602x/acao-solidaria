@@ -8,6 +8,14 @@ export class CreateUserDto {
   name: string
 
   @ApiProperty({
+    description: 'The role of the user',
+    example: 'church | seminary | priest | seminarist | pilgrim',
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  role: string
+
+  @ApiProperty({
     description: 'The email of the user',
     example: 'user@example.com',
   })
