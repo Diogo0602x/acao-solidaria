@@ -5,7 +5,7 @@ export const infoApi = {
   termsOfService: 'http://api_url/terms/',
   contact: {
     name: 'Ação Solidária Team',
-    email: 'hello@jornadasolidaria.com.br',
-    url: 'https://www.jornadasolidaria.com.br/',
+    email: 'hello@acaosolidaria.com.br',
+    url: 'https://www.acaosolidaria.com.br/',
   },
 }

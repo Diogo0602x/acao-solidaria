@@ -9,9 +9,6 @@ This is the backend API for managing users and fundraisings. It includes functio
 - **User Management**:
   - Create, update, delete, and list users.
   - Authenticate users.
-- **Principal User Management**:
-  - Create, update, delete, and list principal users.
-  - Authenticate principal users.
 - **Fundraising Management**:
   - Create, update, delete, and list fundraisings.
   - List fundraisings by user and by ID.

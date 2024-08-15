@@ -1,29 +1,34 @@
 {
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["src/**/*", "bin/**/*", "test/**/*"],
   "compilerOptions": {
-    "target": "es2017",
     "module": "commonjs",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "target": "es2017",
+    "sourceMap": true,
     "outDir": "./dist",
+    "baseUrl": "./",
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@test/*": ["test/*"],
+      "@modules/*": ["src/modules/*", "modules/*"],
+      "@config/*": ["src/config/*", "config/*"],
+      "@shared/*": ["src/shared/*", "shared/*"],
+      "@users/*": ["src/modules/users/*", "modules/users/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@docs/*": ["src/docs/*", "docs/*"],
+      "@notifications/*": ["modules/notifications/*"],
+      "@appointments/*": ["modules/appointments/*"]
+    },
     "strict": true,
     "strictPropertyInitialization": false,
-    "baseUrl": "./src",
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
     "allowJs": true,
-    "paths": {
-      "@modules/*": ["modules/*"],
-      "@config/*": ["config/*"],
-      "@shared/*": ["shared/*"],
-      "@users/*": ["modules/users/*"],
-      "@fundraising/*": ["modules/fundraising/*"],
-      "@efi/*": ["modules/efi/*"],
-      "@docs/*": ["docs/*"]
-    },
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
     "resolveJsonModule": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  }
 }
