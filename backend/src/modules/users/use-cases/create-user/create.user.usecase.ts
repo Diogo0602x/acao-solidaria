@@ -9,12 +9,36 @@ export class CreateUserUseCase {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute(createUserDto: CreateUserDto): Promise<User> {
-    const { email, password } = createUserDto
+    const { email, password, role, cpf, cnpj, linkedTo } = createUserDto
 
     const userExists = await this.usersRepository.findByEmail(email)
 
     if (userExists) {
       throw new BadRequestException('Email already in use')
+    }
+
+    if ((role === 'church' || role === 'seminary') && !cnpj) {
+      throw new BadRequestException(
+        'CNPJ is required for role church or seminary.',
+      )
+    }
+
+    if (
+      (role === 'priest' || role === 'seminarist' || role === 'pilgrim') &&
+      !cpf
+    ) {
+      throw new BadRequestException(
+        'CPF is required for role priest, seminarist, or pilgrim.',
+      )
+    }
+
+    if (
+      (role === 'priest' || role === 'seminarist' || role === 'pilgrim') &&
+      !linkedTo
+    ) {
+      throw new BadRequestException(
+        'linkedTo is required for role priest, seminarist, or pilgrim.',
+      )
     }
 
     const hashedPassword = await bcrypt.hash(password, 8)
