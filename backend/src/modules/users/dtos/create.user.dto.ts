@@ -112,6 +112,14 @@ export class CreateUserDto {
     complement?: string
   }
 
+  @ApiProperty({
+    description: 'The pix chave aleatória of the user',
+    example: 'uuid-pix-key-chave-aleatoria',
+  })
+  @IsString()
+  @IsNotEmpty()
+  pixKeyChaveAleatoria?: string
+
   @ApiPropertyOptional({
     description:
       'The ID of the user to whom this user is linked (required for priest, seminarist, pilgrim)',

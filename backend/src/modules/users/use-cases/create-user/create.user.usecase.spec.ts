@@ -4,9 +4,20 @@ import { UsersRepository } from '@users/repositories/users.repository'
 import { CreateUserDto } from '@users/dtos/create.user.dto'
 import { User } from '@users/entities/user.entity'
 import * as bcrypt from 'bcryptjs'
+import * as fs from 'fs'
+import * as path from 'path'
 import { BadRequestException } from '@nestjs/common'
 
 jest.mock('bcryptjs')
+jest.mock('fs')
+jest.mock('path', () => {
+  const originalPath = jest.requireActual('path')
+  return {
+    ...originalPath,
+    resolve: jest.fn((...args) => originalPath.resolve(...args)),
+    join: jest.fn((...args) => originalPath.join(...args)),
+  }
+})
 
 describe('CreateUserUseCase', () => {
   let createUserUseCase: CreateUserUseCase
@@ -31,7 +42,7 @@ describe('CreateUserUseCase', () => {
     usersRepository = module.get<UsersRepository>(UsersRepository)
   })
 
-  it('should successfully create a new user with role "pilgrim"', async () => {
+  it('should successfully create a new user and create directories when they do not exist', async () => {
     const createUserDto: CreateUserDto = {
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -55,6 +66,73 @@ describe('CreateUserUseCase', () => {
     ;(usersRepository.create as jest.Mock).mockReturnValue(user)
     ;(usersRepository.save as jest.Mock).mockResolvedValue(user)
 
+    const existsSyncMock = fs.existsSync as jest.Mock
+    const mkdirSyncMock = fs.mkdirSync as jest.Mock
+
+    existsSyncMock.mockReturnValue(false) // Simulate directories do not exist
+    mkdirSyncMock.mockImplementation(() => undefined)
+
+    const result = await createUserUseCase.execute(createUserDto)
+
+    const userDir = path.resolve(
+      __dirname,
+      `../../../../../acao-solidaria-storage/users/${user.id}`,
+    )
+
+    expect(usersRepository.findByEmail).toHaveBeenCalledWith(
+      createUserDto.email,
+    )
+    expect(bcrypt.hash).toHaveBeenCalledWith(createUserDto.password, 8)
+    expect(usersRepository.create).toHaveBeenCalledWith({
+      ...createUserDto,
+      password: hashedPassword,
+    })
+    expect(usersRepository.save).toHaveBeenCalledWith(user)
+    expect(result).toEqual(user)
+
+    // Expect directory creation methods to be called when directories do not exist
+    expect(existsSyncMock).toHaveBeenCalledTimes(3)
+    expect(mkdirSyncMock).toHaveBeenCalledTimes(3)
+    expect(mkdirSyncMock).toHaveBeenCalledWith(userDir, { recursive: true })
+    expect(mkdirSyncMock).toHaveBeenCalledWith(
+      path.join(userDir, 'fundraising'),
+      { recursive: true },
+    )
+    expect(mkdirSyncMock).toHaveBeenCalledWith(
+      path.join(userDir, 'certificates'),
+      { recursive: true },
+    )
+  })
+
+  it('should successfully create a new user and not create directories if they exist', async () => {
+    const createUserDto: CreateUserDto = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'password123',
+      telephone: '123456789',
+      role: 'pilgrim',
+      cpf: '123.456.789-00',
+      linkedTo: 'some-linked-id',
+    }
+
+    const hashedPassword = 'hashedPassword'
+    ;(bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword)
+
+    const user = new User()
+    user.id = 'some-uuid'
+    user.name = createUserDto.name
+    user.email = createUserDto.email
+    user.password = hashedPassword
+    user.telephone = createUserDto.telephone
+    ;(usersRepository.findByEmail as jest.Mock).mockResolvedValue(null)
+    ;(usersRepository.create as jest.Mock).mockReturnValue(user)
+    ;(usersRepository.save as jest.Mock).mockResolvedValue(user)
+
+    const existsSyncMock = fs.existsSync as jest.Mock
+    const mkdirSyncMock = fs.mkdirSync as jest.Mock
+
+    existsSyncMock.mockReturnValue(true) // Simulate directories already exist
+
     const result = await createUserUseCase.execute(createUserDto)
 
     expect(usersRepository.findByEmail).toHaveBeenCalledWith(
@@ -67,6 +145,10 @@ describe('CreateUserUseCase', () => {
     })
     expect(usersRepository.save).toHaveBeenCalledWith(user)
     expect(result).toEqual(user)
+
+    // Expect directory creation methods NOT to be called since directories exist
+    expect(existsSyncMock).toHaveBeenCalledTimes(3)
+    expect(mkdirSyncMock).not.toHaveBeenCalled()
   })
 
   it('should throw BadRequestException if email is already in use', async () => {

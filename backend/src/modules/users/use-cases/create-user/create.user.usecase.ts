@@ -3,6 +3,8 @@ import { UsersRepository } from '@users/repositories/users.repository'
 import { CreateUserDto } from '@users/dtos/create.user.dto'
 import { User } from '@users/entities/user.entity'
 import * as bcrypt from 'bcryptjs'
+import * as fs from 'fs'
+import * as path from 'path'
 
 @Injectable()
 export class CreateUserUseCase {
@@ -48,6 +50,31 @@ export class CreateUserUseCase {
       password: hashedPassword,
     })
 
-    return this.usersRepository.save(user)
+    const savedUser = await this.usersRepository.save(user)
+
+    this.createUserDirectories(savedUser.id)
+
+    return savedUser
+  }
+
+  private createUserDirectories(userId: string): void {
+    const userDir = path.resolve(
+      __dirname,
+      `../../../../../acao-solidaria-storage/users/${userId}`,
+    )
+    const fundraisingDir = path.join(userDir, 'fundraising')
+    const certificatesDir = path.join(userDir, 'certificates')
+
+    if (!fs.existsSync(userDir)) {
+      fs.mkdirSync(userDir, { recursive: true })
+    }
+
+    if (!fs.existsSync(fundraisingDir)) {
+      fs.mkdirSync(fundraisingDir, { recursive: true })
+    }
+
+    if (!fs.existsSync(certificatesDir)) {
+      fs.mkdirSync(certificatesDir, { recursive: true })
+    }
   }
 }

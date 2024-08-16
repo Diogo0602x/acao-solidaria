@@ -50,6 +50,11 @@ export class CreateUsersTable1681000000000 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'pixKeyChaveAleatoria',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'linkedTo',
             type: 'varchar',
             isNullable: true,

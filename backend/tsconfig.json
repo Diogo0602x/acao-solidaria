@@ -21,10 +21,9 @@
       "@config/*": ["src/config/*", "config/*"],
       "@shared/*": ["src/shared/*", "shared/*"],
       "@users/*": ["src/modules/users/*", "modules/users/*"],
-      "@auth/*": ["src/modules/auth/*"],
-      "@docs/*": ["src/docs/*", "docs/*"],
-      "@notifications/*": ["modules/notifications/*"],
-      "@appointments/*": ["modules/appointments/*"]
+      "@fundraising/*": ["src/modules/fundraising/*", "modules/fundraising/*"],
+      "@auth/*": ["src/modules/auth/*", "auth/*"],
+      "@docs/*": ["src/docs/*", "docs/*"]
     },
     "strict": true,
     "strictPropertyInitialization": false,

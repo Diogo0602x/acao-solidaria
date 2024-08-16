@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Fundraising } from '@fundraising/entities/fundraising.entity'
 
 @Entity('users')
 export class User {
@@ -70,9 +71,19 @@ export class User {
     complement?: string
   }
 
-  @ApiProperty({ description: 'The role of the user', example: 'pilgrim' })
+  @ApiProperty({
+    description: 'The role of the user',
+    example: 'church | seminary | priest | seminarist | pilgrim',
+  })
   @Column({ default: 'pilgrim' })
   role: string
+
+  @ApiPropertyOptional({
+    description: 'The pix chave aleatória of the user',
+    example: 'uuid-pix-key-chave-aleatoria',
+  })
+  @Column({ nullable: true })
+  pixKeyChaveAleatoria?: string
 
   @ApiPropertyOptional({
     description: 'The ID of the user to whom this user is linked',
@@ -80,4 +91,9 @@ export class User {
   })
   @Column({ nullable: true })
   linkedTo?: string
+
+  @OneToMany(() => Fundraising, (fundraising) => fundraising.user, {
+    lazy: true,
+  })
+  fundraisings: Promise<Fundraising[]>
 }
