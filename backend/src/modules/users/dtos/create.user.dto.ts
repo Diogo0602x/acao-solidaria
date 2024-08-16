@@ -15,13 +15,9 @@ import { Roles } from '@users/types'
 export class RoleValidation implements ValidatorConstraintInterface {
   validate(value: string, args: ValidationArguments) {
     const role = (args.object as Roles).role
-    if (role === 'church' || role === 'seminary') {
+    if (['church', 'seminary'].includes(role)) {
       return value != null
-    } else if (
-      role === 'priest' ||
-      role === 'seminarist' ||
-      role === 'pilgrim'
-    ) {
+    } else if (['priest', 'seminarist', 'pilgrim'].includes(role)) {
       return value != null
     }
     return true
@@ -29,13 +25,9 @@ export class RoleValidation implements ValidatorConstraintInterface {
 
   defaultMessage(args: ValidationArguments) {
     const role = (args.object as Roles).role
-    if (role === 'church' || role === 'seminary') {
+    if (['church', 'seminary'].includes(role)) {
       return 'CNPJ must be provided for role church or seminary.'
-    } else if (
-      role === 'priest' ||
-      role === 'seminarist' ||
-      role === 'pilgrim'
-    ) {
+    } else if (['priest', 'seminarist', 'pilgrim'].includes(role)) {
       return 'CPF must be provided for role priest, seminarist, or pilgrim.'
     }
     return 'Invalid role specified.'
@@ -77,10 +69,7 @@ export class CreateUserDto {
       'The CPF of the user (required for priest, seminarist, pilgrim)',
     example: '123.456.789-00',
   })
-  @ValidateIf(
-    (o) =>
-      o.role === 'priest' || o.role === 'seminarist' || o.role === 'pilgrim',
-  )
+  @ValidateIf((o) => ['priest', 'seminarist', 'pilgrim'].includes(o.role))
   @IsNotEmpty({ message: 'CPF is required for this role' })
   @IsString()
   cpf?: string
@@ -89,7 +78,7 @@ export class CreateUserDto {
     description: 'The CNPJ of the user (required for church, seminary)',
     example: '12.345.678/0001-99',
   })
-  @ValidateIf((o) => o.role === 'church' || o.role === 'seminary')
+  @ValidateIf((o) => ['church', 'seminary'].includes(o.role))
   @IsNotEmpty({ message: 'CNPJ is required for this role' })
   @IsString()
   cnpj?: string
@@ -128,10 +117,7 @@ export class CreateUserDto {
       'The ID of the user to whom this user is linked (required for priest, seminarist, pilgrim)',
     example: 'uuid-linked-to',
   })
-  @ValidateIf(
-    (o) =>
-      o.role === 'priest' || o.role === 'seminarist' || o.role === 'pilgrim',
-  )
+  @ValidateIf((o) => ['priest', 'seminarist', 'pilgrim'].includes(o.role))
   @IsNotEmpty({ message: 'linkedTo is required for this role' })
   @IsString()
   linkedTo?: string

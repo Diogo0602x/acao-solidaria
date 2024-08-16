@@ -8,19 +8,30 @@ import { UpdateUserUseCase } from '@users/use-cases/update-user/update.user.usec
 import { DeleteUserController } from '@users/use-cases/delete-user/delete.user.controller'
 import { DeleteUserUseCase } from '@users/use-cases/delete-user/delete.user.usecase'
 import { User } from '@users/entities/user.entity'
-
+import { ListUsersController } from '@users/use-cases/list-users/list.users.controller'
+import { ListUsersUseCase } from '@users/use-cases/list-users/list.users.usecase'
+import { GetUserByIdController } from '@users/use-cases/get-user-by-id/get.user.by.id.controller'
+import { GetUserByIdUseCase } from '@users/use-cases/get-user-by-id/get.user.by.id.usecase'
+import { GetPrincipalUsersComboSelectController } from '@users/use-cases/get-principal-users-combo-select/get.principal.users.combo.select.controller'
+import { GetPrincipalUsersComboSelectUseCase } from '@users/use-cases/get-principal-users-combo-select/get.principal.users.combo.select.usecase'
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [
     CreateUserController,
     UpdateUserController,
     DeleteUserController,
+    ListUsersController,
+    GetUserByIdController,
+    GetPrincipalUsersComboSelectController,
   ],
   providers: [
     UsersRepository,
     CreateUserUseCase,
     UpdateUserUseCase,
     DeleteUserUseCase,
+    ListUsersUseCase,
+    GetUserByIdUseCase,
+    GetPrincipalUsersComboSelectUseCase,
   ],
   exports: [UsersRepository],
 })
