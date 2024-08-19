@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm'
 import { User } from '@users/entities/user.entity'
+import { Purchase } from '@fundraising/entities/purchase.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
 @Entity('fundraisings')
@@ -61,4 +68,7 @@ export class Fundraising {
   @ApiProperty({ description: 'The user who created the fundraising' })
   @ManyToOne(() => User, (user) => user.fundraisings, { lazy: true })
   user: Promise<User>
+
+  @OneToMany(() => Purchase, (purchase) => purchase.fundraising, { lazy: true })
+  purchases: Promise<Purchase[]>
 }

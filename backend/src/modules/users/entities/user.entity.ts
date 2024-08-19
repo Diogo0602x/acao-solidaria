@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Fundraising } from '@fundraising/entities/fundraising.entity'
+import { Purchase } from '@fundraising/entities/purchase.entity'
 
 @Entity('users')
 export class User {
@@ -95,5 +96,10 @@ export class User {
   @OneToMany(() => Fundraising, (fundraising) => fundraising.user, {
     lazy: true,
   })
-  fundraisings: Promise<Fundraising[]>
+  fundraisings?: Promise<Fundraising[]>
+
+  @OneToMany(() => Purchase, (purchase) => purchase.user, {
+    lazy: true,
+  })
+  purchases?: Promise<Purchase[]>
 }

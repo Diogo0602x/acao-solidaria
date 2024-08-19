@@ -9,14 +9,14 @@ export class CreateFundraisingTable1681000000001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'fundraising',
+        name: 'fundraisings',
         columns: [
           {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-            generationStrategy: 'uuid',
             isGenerated: true,
+            generationStrategy: 'uuid',
           },
           {
             name: 'name',
@@ -57,22 +57,13 @@ export class CreateFundraisingTable1681000000001 implements MigrationInterface {
             name: 'userId',
             type: 'uuid',
           },
-          {
-            name: 'createdAt',
-            type: 'timestamp',
-            default: 'now()',
-          },
-          {
-            name: 'updatedAt',
-            type: 'timestamp',
-            default: 'now()',
-          },
         ],
       }),
+      true,
     )
 
     await queryRunner.createForeignKey(
-      'fundraising',
+      'fundraisings',
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
@@ -83,6 +74,6 @@ export class CreateFundraisingTable1681000000001 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('fundraising')
+    await queryRunner.dropTable('fundraisings')
   }
 }

@@ -22,7 +22,7 @@
       "@shared/*": ["src/shared/*", "shared/*"],
       "@users/*": ["src/modules/users/*", "modules/users/*"],
       "@fundraising/*": ["src/modules/fundraising/*", "modules/fundraising/*"],
-      "@auth/*": ["src/modules/auth/*", "auth/*"],
+      "@auth/*": ["src/modules/auth/*", "modules/auth/*"],
       "@docs/*": ["src/docs/*", "docs/*"]
     },
     "strict": true,

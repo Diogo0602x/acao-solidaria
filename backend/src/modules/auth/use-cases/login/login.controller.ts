@@ -1,13 +1,13 @@
 import { Controller, Post, Body } from '@nestjs/common'
-import { LoginService } from '@auth/use-cases/login/login.service'
+import { LoginUseCase } from '@auth/use-cases/login/login.usecase'
 import { LoginDto } from '@auth/dtos/login.dto'
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
-import { User } from '@modules/users/entities/user.entity'
+import { User } from '@users/entities/user.entity'
 
 @ApiTags('Auth')
 @Controller('auth')
 export class LoginController {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly loginService: LoginUseCase) {}
 
   @Post('login')
   @ApiOperation({

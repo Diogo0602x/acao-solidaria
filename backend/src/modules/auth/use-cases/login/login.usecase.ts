@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt'
 import { User } from '@users/entities/user.entity'
 
 @Injectable()
-export class LoginService {
+export class LoginUseCase {
   constructor(
     private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService,
@@ -37,7 +37,7 @@ export class LoginService {
     }
 
     // Generate the JWT token
-    const payload = { sub: user.id, name: user.name }
+    const payload = { sub: user.id, name: user.name, role: user.role }
     const token = this.jwtService.sign(payload)
 
     // Return the token and the user data

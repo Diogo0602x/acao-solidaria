@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 
-export class CreateUsersTable1681000000000 implements MigrationInterface {
+export class CreateUserTable1681000000000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -10,12 +10,8 @@ export class CreateUsersTable1681000000000 implements MigrationInterface {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
+            isGenerated: true,
             generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
-          },
-          {
-            name: 'role',
-            type: 'varchar',
           },
           {
             name: 'name',
@@ -50,17 +46,23 @@ export class CreateUsersTable1681000000000 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'role',
+            type: 'varchar',
+            default: "'pilgrim'",
+          },
+          {
             name: 'pixKeyChaveAleatoria',
             type: 'varchar',
             isNullable: true,
           },
           {
             name: 'linkedTo',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: true,
           },
         ],
       }),
+      true,
     )
   }
 
